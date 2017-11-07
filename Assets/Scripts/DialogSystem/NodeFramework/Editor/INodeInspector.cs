@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public interface INodeInspector {
+namespace SpyOnHuman.NodeFramework
+{
+    public interface INodeInspector
+    {
 
-    void OnDrawNodeGUI(Rect rect);
+        void OnDrawNodeGUI(Rect rect);
 
+    }
 }

@@ -34,7 +34,7 @@ namespace SpyOnHuman.NodeFramework
             canvasName = name;
             canvasDescription = description;
             //The saving of the first timestamp: aka "Creation Timestamp"
-            canvasTimestamp = System.DateTime.Now.ToString("YYYY/MM/dd"); //TODO: Correct Timestamp
+            canvasTimestamp = System.DateTime.Now.ToString("yyyy/MM/dd-HH:mm:ss"); //TODO: Correct Timestamp
         }
 
         #endregion
@@ -69,10 +69,10 @@ namespace SpyOnHuman.NodeFramework
         public string canvasName;
 
         //A list of all created Nodes referenced in this Canvas
-        public List<Node> nodes;
+        public List<Node> nodes = new List<Node>();
 
         //A list of all created Connections referenced in some Nodes of this Canvas
-        public List<NodeConnection> connections;
+        public List<NodeConnection> connections = new List<NodeConnection>();
 
         #endregion
 

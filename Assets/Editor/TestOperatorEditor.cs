@@ -23,7 +23,7 @@ public class TestOperatorEditor : Editor {
             Dictionary<string, System.Type> types = NodeOperator.CollectNodeTypes(test.testString);
             foreach (KeyValuePair<string, System.Type> type in types)
             {
-                Node node = Node.CreateNode(type.Value, Vector2.zero);
+                //Node node = Node.CreateNode(type.Value, Vector2.zero);
                 Debug.Log(type.Key + " -> " + type.Value.Name);
             }
         }
