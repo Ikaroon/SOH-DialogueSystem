@@ -11,7 +11,10 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
 
         #region Backend Data
 
-        public Texture2D ico, profile;
+        //The image used as Profile placeholder
+        public Texture2D profile;
+
+        //The last path used to save the Character
         private string lastSavedPath;
 
         #endregion
@@ -19,15 +22,24 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
         //-----------------------------------------------------------------------------------------
 
         #region Style Data
-
+        
+        //The Styles used for the editor window
         private static GUIStyle styleBox, styleHeader, styleTimestamp, styleCenterLabel, styleToolbar, styleToolbarButton, styleTextField, styleTextFieldNoText, styleTextFieldEmpty;
 
         #endregion
 
         #region Stlye Methods
 
+        /// <summary>
+        /// Initialize the Styles used for the character editor
+        /// </summary>
         private static void InitStyles()
         {
+            if (styleBox != null)
+            {
+                return;
+            }
+
             styleBox = new GUIStyle(GUI.skin.GetStyle("GroupBox"));
 
             styleHeader = new GUIStyle(GUI.skin.GetStyle("HeaderLabel"));
@@ -40,10 +52,8 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
             styleCenterLabel.alignment = TextAnchor.MiddleCenter;
 
             styleToolbar = new GUIStyle(GUI.skin.GetStyle("Toolbar"));
-            styleToolbar.fixedHeight = 0f;
 
             styleToolbarButton = new GUIStyle(GUI.skin.GetStyle("toolbarbutton"));
-            styleToolbarButton.fixedHeight = 0f;
 
             styleTextField = new GUIStyle(GUI.skin.GetStyle("LargeTextField"));
             styleTextField.fixedHeight = 0f;
@@ -69,10 +79,13 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
 
         #region Editor Data
 
+        //The current edited Character Sheet
         private Character sheet;
 
+        //The current scroll amount for the entire view
         private static Vector2 scrollView = Vector2.zero;
 
+        //Story sheet list remove task
         private int removedStorySheet = -1;
 
         #endregion
@@ -84,13 +97,13 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
         {
             CharacterEditWindow window = (CharacterEditWindow)EditorWindow.GetWindow(typeof(CharacterEditWindow));
             window.Show();
-            window.minSize = new Vector2(400f, 200f);
         }
 
         void OnEnable()
         {
             lastSavedPath = "";
-            this.titleContent = new GUIContent("Char Editor", ico);
+            minSize = new Vector2(400f, 200f);
+            titleContent = new GUIContent("Char Editor");
         }
 
         void Update()
@@ -102,23 +115,24 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
             }
         }
 
+        //The window draw method
         void OnGUI()
         {
-            if (styleBox == null)
-            {
-                InitStyles();
-            }
+            //Initialize Styles
+            InitStyles();
 
-            Toolbar(new Rect(0f, 0f, position.width, 20f));
+            //Draw the Toolbar for the Character editor
+            Toolbar(new Rect(0f, 0f, position.width, 18f));
 
-
+            //Draw the Character Sheet editor when a sheet is available
             if (sheet != null)
             {
-                scrollView = GUI.BeginScrollView(new Rect(0f, 20f, position.width, position.height - 20f), scrollView, new Rect(8f, 8f, position.width - 16f, 368f + 40f * sheet.storySheets.Count), false, true);
+                scrollView = GUI.BeginScrollView(new Rect(0f, 18f, position.width, position.height - 18f), scrollView, new Rect(8f, 8f, position.width - 16f, 368f + 40f * sheet.storySheets.Count), false, true);
                 CharacterSheet(new Rect(16f, 16f, position.width, position.height));
                 GUI.EndScrollView();
             }
 
+            //Check for Events
             if (Event.current.commandName == "ObjectSelectorClosed")
             {
                 if (EditorGUIUtility.GetObjectPickerControlID() == 10)
@@ -135,23 +149,22 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
 
         #region Toolbar Methods
 
+        /// <summary>
+        /// A method which draws the toolbar for the editor view
+        /// </summary>
+        /// <param name="rect">The Area used for the Toolbar</param>
         void Toolbar(Rect rect)
         {
             GUILayout.BeginArea(rect, styleToolbar);
 
             if (GUI.Button(new Rect(8f, 0f, 100f, rect.height), "Data", styleToolbarButton))
             {
-                GenericMenu menu = new GenericMenu();
-                menu.AddItem(new GUIContent("New"), false, New);
-                menu.AddItem(new GUIContent("Load"), false, Load);
-                menu.AddItem(new GUIContent("Save"), false, Save);
-                menu.AddItem(new GUIContent("Save As"), false, SaveAs);
-                menu.ShowAsContext();
+                DrawDataMenu(new Rect(8f, 18f, 0f, 0f));
             }
 
             if (GUI.Button(new Rect(108f, 0f, 100f, rect.height), "Edit", styleToolbarButton))
             {
-
+                DrawEditMenu(new Rect(108f, 18f, 0f, 0f));
             }
 
             GUILayout.EndArea();
@@ -161,12 +174,37 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
 
         #region Data Menu Methods
 
+        /// <summary>
+        /// Draws the Data DropDown Menu
+        /// </summary>
+        /// <param name="rect">The position for the menu</param>
+        void DrawDataMenu(Rect rect)
+        {
+            GenericMenu menu = new GenericMenu();
+            menu.AddItem(new GUIContent("New"), false, New);
+            menu.AddItem(new GUIContent("Load"), false, Load);
+
+            if (sheet)
+            {
+                menu.AddItem(new GUIContent("Save"), false, Save);
+                menu.AddItem(new GUIContent("Save As"), false, SaveAs);
+            } else
+            {
+                menu.AddDisabledItem(new GUIContent("Save"));
+                menu.AddDisabledItem(new GUIContent("Save As"));
+            }
+
+            menu.DropDown(rect);
+        }
+
+        //Creates a new Character sheet
         void New()
         {
             sheet = (Character)ScriptableObject.CreateInstance<Character>();
             lastSavedPath = "";
         }
 
+        //Loads a Character sheet
         void Load()
         {
             string path = lastSavedPath = EditorUtility.OpenFilePanel("Load Character Sheet", "Assets/", "asset");
@@ -182,6 +220,7 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
             sheet = AssetDatabase.LoadAssetAtPath(path, typeof(Character)) as Character;
         }
 
+        //Tries to Save the Character sheet at the last given path
         void Save()
         {
             if (string.IsNullOrEmpty(lastSavedPath))
@@ -201,6 +240,7 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
             AssetDatabase.Refresh();
         }
 
+        //Saves the Character sheet at the position selected via the Save File Panel
         void SaveAs()
         {
             string path = lastSavedPath = EditorUtility.SaveFilePanelInProject("Save Character Sheet", "Char_" + sheet.forename + "_" + sheet.surname, "asset", "", "Assets/");
@@ -226,19 +266,45 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
 
         #endregion
 
+        #region Edit Menu Methods
+
+        /// <summary>
+        /// Draw the Edit DropDown Menu
+        /// </summary>
+        /// <param name="rect">The position for the menu</param>
+        void DrawEditMenu(Rect rect)
+        {
+            GenericMenu menu = new GenericMenu();
+
+            if (sheet)
+            {
+                menu.AddItem(new GUIContent("Randomize"), false, null);
+            }
+            else
+            {
+                menu.AddDisabledItem(new GUIContent("Randomize"));
+            }
+
+            menu.DropDown(rect);
+        }
+
+        #endregion
+
         //-----------------------------------------------------------------------------------------
 
         #region Header
 
+        //Draws the Header for the Character sheet and send the draw command to all sub drawers of the Character sheet
         void CharacterSheet(Rect rect)
         {
-
+            //Draw the Sheet header
             GUILayout.BeginArea(new Rect(16f, 16f, rect.width - 32f, 32f), styleBox);
             float halfWidth = (rect.width - 56f) / 2f;
             GUI.Label(new Rect(8f, 8f, halfWidth, 16f), "Character Sheet", styleHeader);
             GUI.Label(new Rect(16f + halfWidth, 8f, halfWidth, 16f), sheet.timestamp, styleTimestamp);
             GUILayout.EndArea();
 
+            //Draw Sheet body
             Profile(new Rect(16f, 56f, rect.width - 32f, 96f));
             Modifier(new Rect(16f, 160f, rect.width - 32f, 64f));
             ExtraSettings(new Rect(16f, 232f, rect.width - 32f, 96f));
@@ -251,6 +317,10 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
 
         #region Character Settings Methods
 
+        /// <summary>
+        /// Draws the Profile part of the Character Editor
+        /// </summary>
+        /// <param name="rect">The position for the Profile Section</param>
         void Profile(Rect rect)
         {
             GUILayout.BeginArea(rect, styleBox);
@@ -282,6 +352,10 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
             GUILayout.EndArea();
         }
 
+        /// <summary>
+        /// Draws the Gameplay part of the Character Editor
+        /// </summary>
+        /// <param name="rect">The position for the Gameplay Section</param>
         void Modifier(Rect rect)
         {
             GUILayout.BeginArea(rect, styleBox);
@@ -304,6 +378,10 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
 
         #region Extra Settings Methods
 
+        /// <summary>
+        /// Draws the Extra Settings part of the Character Editor
+        /// </summary>
+        /// <param name="rect">The position for the ExtraSettings Section</param>
         void ExtraSettings(Rect rect)
         {
             GUILayout.BeginArea(rect, styleBox);
@@ -319,6 +397,10 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
 
         #region Story Sheets Methods
 
+        /// <summary>
+        /// Draws the Story Sheets part of the Character Editor
+        /// </summary>
+        /// <param name="rect">The position for the Story Sheets Section</param>
         void StorySheets(Rect rect)
         {
             GUILayout.BeginArea(rect, styleBox);
@@ -334,13 +416,21 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
             GUILayout.EndArea();
         }
 
-        void StorySheet(Rect rect, int s)
+        /// <summary>
+        /// Draws one single Story Sheet in the Story Sheets List
+        /// </summary>
+        /// <param name="rect">The position for the single Story Sheet</param>
+        /// <param name="sheetIndex">The Index of the sheet</param>
+        void StorySheet(Rect rect, int sheetIndex)
         {
             GUILayout.BeginArea(rect, styleBox);
-            sheet.storySheets[s] = (DialogCanvas)EditorGUI.ObjectField(new Rect(8f, 8f, rect.width - 64f, 16f), sheet.storySheets[s] == null ? "Story Sheet" : sheet.storySheets[s].canvasName, sheet.storySheets[s], typeof(DialogCanvas), false);
+            sheet.storySheets[sheetIndex] = (DialogCanvas)EditorGUI.ObjectField(new Rect(8f, 8f, rect.width - 64f, 16f),
+                sheet.storySheets[sheetIndex] == null ? "Story Sheet" : sheet.storySheets[sheetIndex].canvasName,
+                sheet.storySheets[sheetIndex], typeof(DialogCanvas), false);
+
             if (GUI.Button(new Rect(rect.width - 48f, 8f, 40f, 16f), "-"))
             {
-                removedStorySheet = s;
+                removedStorySheet = sheetIndex;
             }
             GUILayout.EndArea();
         }
@@ -351,6 +441,12 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
 
         #region Extra Fields
 
+        /// <summary>
+        /// A Text Field with a placeholder option
+        /// </summary>
+        /// <param name="rect">The Rect for the field</param>
+        /// <param name="input">The string which should be edited</param>
+        /// <param name="placeholder">The placeholder for the field</param>
         void FillingTextField(Rect rect, ref string input, string placeholder)
         {
             input = GUI.TextField(rect, input, styleTextField);
@@ -360,6 +456,12 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
             }
         }
 
+        /// <summary>
+        /// A Int Field with a placeholder option
+        /// </summary>
+        /// <param name="rect">The Rect for the field</param>
+        /// <param name="input">The int which should be edited</param>
+        /// <param name="placeholder">The placeholder for the field</param>
         void FillingIntField(Rect rect, ref int input, string placeholder)
         {
             input = Mathf.Max(0, EditorGUI.IntField(rect, input, (int)input != 0 ? styleTextField : styleTextFieldNoText));
