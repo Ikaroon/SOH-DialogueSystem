@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpyOnHuman.NodeFramework
+namespace SpyOnHuman.DialogSystem.NodeFramework
 {
     //------------------------------\\
     //-----------< DATA >-----------\\

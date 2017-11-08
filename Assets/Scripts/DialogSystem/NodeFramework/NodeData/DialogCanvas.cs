@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpyOnHuman.NodeFramework
+namespace SpyOnHuman.DialogSystem.NodeFramework
 {
-    public class NodeCanvas : ScriptableObject
+    public class DialogCanvas : ScriptableObject
     {
         //--------------------------------\\
         //-----------< EDITOR >-----------\\
@@ -48,7 +48,7 @@ namespace SpyOnHuman.NodeFramework
         /// <param name="name">The name used for the Canvas</param>
         /// <param name="description">The description used for the Canvas</param>
         /// <returns>The created Canvas of type T</returns>
-        public static T CreateCanvas<T>(string name = "", string description = "") where T : NodeCanvas
+        public static T CreateCanvas<T>(string name = "", string description = "") where T : DialogCanvas
         {
             T canvas = ScriptableObject.CreateInstance<T>();
             canvas.InitiateCanvas(name, description);
@@ -70,6 +70,9 @@ namespace SpyOnHuman.NodeFramework
 
         //A list of all created Nodes referenced in this Canvas
         public List<Node> nodes = new List<Node>();
+
+        //The Start Node
+        public StartNode startNode;
 
         //A list of all created Connections referenced in some Nodes of this Canvas
         public List<NodeConnection> connections = new List<NodeConnection>();

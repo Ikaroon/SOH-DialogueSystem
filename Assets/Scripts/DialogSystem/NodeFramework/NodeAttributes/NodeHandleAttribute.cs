@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace SpyOnHuman.NodeFramework
+namespace SpyOnHuman.DialogSystem.NodeFramework
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public class NodeHandleAttribute : Attribute

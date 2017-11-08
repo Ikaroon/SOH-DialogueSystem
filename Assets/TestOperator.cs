@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SpyOnHuman.NodeFramework;
+using SpyOnHuman.DialogSystem.NodeFramework;
 
 public class TestOperator : MonoBehaviour {
 

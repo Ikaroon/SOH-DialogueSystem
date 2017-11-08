@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
 
-namespace SpyOnHuman.NodeFramework
+namespace SpyOnHuman.DialogSystem.NodeFramework
 {
     public class NodeHandlePackage
     {

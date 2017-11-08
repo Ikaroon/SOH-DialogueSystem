@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpyOnHuman.NodeFramework
+namespace SpyOnHuman.DialogSystem.NodeFramework
 {
     public class NodeConnection : ScriptableObject
     {
@@ -59,6 +59,7 @@ namespace SpyOnHuman.NodeFramework
             {
                 if (froms[c] == node)
                 {
+                    DiscardConnectionFromNode(node, ConnectionType.Output);
                     froms.RemoveAt(c);
                     fromPositions.RemoveAt(c);
                     return true;
@@ -72,8 +73,29 @@ namespace SpyOnHuman.NodeFramework
         /// </summary>
         public void DiscardConnection()
         {
-            //TODO: Discard all References
+            foreach (Node node in froms)
+            {
+                DiscardConnectionFromNode(node, ConnectionType.Output);
+            }
+            DiscardConnectionFromNode(to, ConnectionType.Input);
             DestroyImmediate(this);
+        }
+
+        /// <summary>
+        /// Discards a specific Reference to this Connection
+        /// </summary>
+        /// <param name="node">The Node which should lose it's reference to this connection</param>
+        /// <param name="type">The type of handle which should be cleared</param>
+        private void DiscardConnectionFromNode(Node node, ConnectionType type)
+        {
+            List<NodeHandlePackage> packs = GetConnections(node, type);
+            foreach (NodeHandlePackage pack in packs)
+            {
+                if (pack.info.GetValue(node) as NodeConnection == this)
+                {
+                    pack.info.SetValue(node, null);
+                }
+            }
         }
 
         /// <summary>
@@ -160,6 +182,34 @@ namespace SpyOnHuman.NodeFramework
             NodeConnection connection = ScriptableObject.CreateInstance<NodeConnection>();
             connection.InitiateConnection(from, fromPos, to, toPos);
             return connection;
+        }
+        
+        /// <summary>
+        /// Collects all NodeHandles in the given node
+        /// </summary>
+        /// <param name="node">The Node which should expose it's handles</param>
+        /// <param name="type">The Type of handle searched</param>
+        /// <returns>A List of all collected NodeHandlePackes</returns>
+        public static List<NodeHandlePackage> GetConnections(Node node, ConnectionType type)
+        {
+            List<NodeHandlePackage> fields = new List<NodeHandlePackage>();
+
+            System.Reflection.FieldInfo[] connectionFields = node.GetType().GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+
+            for (int i = 0; i < connectionFields.Length; i++)
+            {
+                NodeHandleAttribute attribute = System.Attribute.GetCustomAttribute(connectionFields[i], typeof(NodeHandleAttribute)) as NodeHandleAttribute;
+
+                if (attribute != null && attribute.handleType == type)
+                {
+                    if (connectionFields.GetType() == typeof(NodeConnection))
+                    {
+                        fields.Add(new NodeHandlePackage(attribute, connectionFields[i]));
+                    }
+                }
+            }
+
+            return fields;
         }
 
         #endregion

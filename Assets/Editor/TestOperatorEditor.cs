@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using SpyOnHuman.NodeFramework;
+using SpyOnHuman.DialogSystem.NodeFramework;
 
 [CustomEditor(typeof(TestOperator))]
 public class TestOperatorEditor : Editor {

@@ -5,7 +5,7 @@ using UnityEditor;
 using System;
 using System.Reflection;
 
-namespace SpyOnHuman.NodeFramework
+namespace SpyOnHuman.DialogSystem.NodeFramework
 {
     public static class NodeOperator
     {
@@ -27,11 +27,7 @@ namespace SpyOnHuman.NodeFramework
 
                 if (attribute != null && attribute.handleType == type)
                 {
-                    if (connectionFields.GetType() == typeof(List<NodeConnection>))
-                    {
-
-                    }
-                    else
+                    if (connectionFields.GetType() == typeof(NodeConnection))
                     {
                         fields.Add(new NodeHandlePackage(attribute, connectionFields[i]));
                     }
