@@ -10,7 +10,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         #region Constant Path Data
 
         private const string BG_IMAGE_PATH = "Assets/_DATA/Resources/DialogSystem/Images/Grid_EditorBG.png";
-        private const string NODE_LIB_PATH = "Assets/Scripts/DialogSystem/DialogNodesLibrary";
+        public const string NODE_LIB_PATH = "Assets/Scripts/DialogSystem/DialogNodesLibrary";
 
         #endregion
 
@@ -100,15 +100,14 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             //Begin Bottom Part of Window
             GUILayout.BeginArea(new Rect(0f, 18f, this.position.width, this.position.height - 18f));
 
-            //Resize Sidebar and Display
-            SidebarDrawer.DrawSidebar(new Rect(-1f, -1f, sidebarWidth, this.position.height - 16f), this, ref sidebarWidth, 240f, this.position.width / 2f);
-
-
             //Display Node Editor Frame
             GUILayout.BeginArea(new Rect(sidebarWidth - 1f, 0f, this.position.width - (sidebarWidth - 1f), this.position.height - 16f));
             DrawNodeField(new Vector2((this.position.width - (sidebarWidth - 1f)) / 2f, (this.position.height - 16f) / 2f));
             GUILayout.EndArea();
 
+            //Resize Sidebar and Display
+            SidebarDrawer.DrawSidebar(new Rect(-1f, -1f, sidebarWidth, this.position.height - 16f), this, ref sidebarWidth, 240f, this.position.width / 2f);
+            
             GUILayout.EndArea();
 
             //-----------------------------------------------------------------------------------------
@@ -137,7 +136,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             //TODO: Scaling
 
             bool mouseInside = new Rect(Vector2.zero, center * 2f).Contains(Event.current.mousePosition);
-
+            
             GUILayout.BeginArea(canvasRect);
 
 
@@ -162,20 +161,31 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
             if (canvas)
             {
+
+                for (int n = 0; n < canvas.nodes.Count; n++)
+                {
+                    if (NodeDrawer.IsVisible(canvasRect, new Rect(canvasRect.position * -1f, center * 2f), canvas.nodes[n]))
+                    {
+                        bool test = false;
+                        NodeDrawer.DrawNode(canvasRect, canvas.nodes[n], ref test, this);
+                    }
+                }
+
+                //if (NodeDrawer.IsVisible(canvasRect, new Rect(canvasRect.position * -1f, center * 2f), canvas.nodes[n]))
+                {
+                    bool test = false;
+                    NodeDrawer.DrawConnections(canvasRect, canvas.connections, ref test);
+                }
+
                 if (canvas && currentTask == DialogEditor.NodeEditorTask.None && Event.current.isMouse && Event.current.type == EventType.MouseDown && Event.current.button == 1 && mouseInside)
                 {
                     DrawCreateNodeMenu(Event.current.mousePosition - new Vector2(6000f, 6000f));
                 }
 
-                NodeDrawer.DrawRawNode(new Rect(6000f - 150f, 6000f - 70f, 300f, 140f), "Test Node Drawer");
-
-                for (int n = 0; n < canvas.nodes.Count; n++)
-                {
-                    NodeDrawer.DrawRawNode(new Rect(canvas.nodes[n].position.x + 6000f, canvas.nodes[n].position.y + 6000f, 300f, 140f), "Test Node Drawer");
-                }
+                Repaint();
                 //TODO: Node Field GUI
             }
-
+            
             GUILayout.EndArea();
 
             EditorGUI.EndDisabledGroup();
@@ -188,16 +198,31 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
         private void DrawCreateNodeMenu(Vector2 createPos)
         {
-            Dictionary<string, System.Type> nodes = NodeOperator.CollectNodeTypes(NODE_LIB_PATH);
-
             GenericMenu menu = new GenericMenu();
+
+            AddNodesToMenu(ref menu, createPos);
+
+            menu.ShowAsContext();
+        }
+
+        public void AddNodesToMenu(ref GenericMenu menu, Vector2 createPos)
+        {
+            Dictionary<string, System.Type> nodes = NodeOperator.CollectNodeTypes(NODE_LIB_PATH);
 
             foreach (KeyValuePair<string, System.Type> pair in nodes)
             {
                 menu.AddItem(new GUIContent(pair.Key), false, CreateNode, new TypePosPack(pair.Value, createPos));
             }
+        }
 
-            menu.ShowAsContext();
+        public void AddDisabledNodesToMenu(ref GenericMenu menu)
+        {
+            Dictionary<string, System.Type> nodes = NodeOperator.CollectNodeTypes(NODE_LIB_PATH);
+
+            foreach (KeyValuePair<string, System.Type> pair in nodes)
+            {
+                menu.AddDisabledItem(new GUIContent(pair.Key));
+            }
         }
 
         private void CreateNode(object obj)

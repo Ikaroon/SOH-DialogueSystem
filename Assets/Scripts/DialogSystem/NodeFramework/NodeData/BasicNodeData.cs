@@ -13,4 +13,13 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         Input = 0,
         Output = 1
     };
+
+    //The type of Mouse Button
+    public enum MouseButton
+    {
+        Left = 0,
+        Right = 1,
+        Middle = 2,
+        None = 3,
+    }
 }

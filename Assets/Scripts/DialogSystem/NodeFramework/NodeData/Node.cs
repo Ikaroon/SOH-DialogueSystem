@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SpyOnHuman.DialogSystem.NodeFramework
 {
-    public class Node : ScriptableObject
+    public abstract class Node : ScriptableObject
     {
         //--------------------------------\\
         //-----------< EDITOR >-----------\\
@@ -30,6 +30,18 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         public void InitiateNode(Vector2 pos)
         {
             position = pos;
+
+            object[] attributes = this.GetType().GetCustomAttributes(false);
+            NodeDataAttribute nodeData = new NodeDataAttribute("", "", 0f, 0f);
+            foreach (object attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(NodeDataAttribute))
+                {
+                    nodeData = attribute as NodeDataAttribute;
+                }
+            }
+
+            size = nodeData.nodeSize;
         }
 
         #endregion

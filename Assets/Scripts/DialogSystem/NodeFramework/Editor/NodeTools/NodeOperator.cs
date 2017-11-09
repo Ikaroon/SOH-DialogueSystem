@@ -27,7 +27,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
                 if (attribute != null && attribute.handleType == type)
                 {
-                    if (connectionFields.GetType() == typeof(NodeConnection))
+                    if (connectionFields[i].FieldType == typeof(NodeConnection))
                     {
                         fields.Add(new NodeHandlePackage(attribute, connectionFields[i]));
                     }

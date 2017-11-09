@@ -32,10 +32,10 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         /// <param name="x">The local handle x position in the system</param>
         /// <param name="y">The local handle y position in the system</param>
         /// <param name="tooltip">The tooltip in the editor</param>
-        public NodeHandleAttribute(ConnectionType type, float x, float y, string tooltip = "")
+        public NodeHandleAttribute(ConnectionType type, float y = -1f, string tooltip = "")
         {
             handleType = type;
-            handlePosition = new Vector2(x, y);
+            handlePosition = new Vector2(0f, y);
             handleTooltip = tooltip;
         }
 

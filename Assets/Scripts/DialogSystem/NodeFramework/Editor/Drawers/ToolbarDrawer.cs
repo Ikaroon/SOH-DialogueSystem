@@ -58,6 +58,12 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 EditMenu(new Rect(107f, 18f, 0f, 0f), editor);
             }
 
+            //Add Menu Button
+            if (GUILayout.Button(new GUIContent("Add"), toolbarButtonStyle, GUILayout.Width(100f)))
+            {
+                AddMenu(new Rect(207f, 18f, 0f, 0f), editor);
+            }
+
             EditorGUI.BeginDisabledGroup(!editor.canvas);
 
             EditorGUILayout.Space();
@@ -196,6 +202,26 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         private static void Improve(object obj)
         {
             //TODO: Improve Tool
+        }
+
+        #endregion
+
+        #region Add Menu
+        
+        private static void AddMenu(Rect rect, DialogEditor editor)
+        {
+            GenericMenu menu = new GenericMenu();
+
+            if (editor.canvas)
+            {
+                editor.AddNodesToMenu(ref menu, Vector2.zero);
+            }
+            else
+            {
+                editor.AddDisabledNodesToMenu(ref menu);
+            }
+
+            menu.DropDown(rect);
         }
 
         #endregion

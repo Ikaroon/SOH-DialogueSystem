@@ -78,6 +78,8 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 DiscardConnectionFromNode(node, ConnectionType.Output);
             }
             DiscardConnectionFromNode(to, ConnectionType.Input);
+            froms.Clear();
+            to = null;
             DestroyImmediate(this);
         }
 
@@ -91,7 +93,18 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             List<NodeHandlePackage> packs = GetConnections(node, type);
             foreach (NodeHandlePackage pack in packs)
             {
-                if (pack.info.GetValue(node) as NodeConnection == this)
+                Vector2 handlePos = Vector2.zero;
+
+                if (type == ConnectionType.Input)
+                {
+                    handlePos = toPosition;
+                } else
+                {
+                    handlePos = fromPositions[froms.IndexOf(node)];
+                }
+
+                Debug.Log(pack.handle.handlePosition + " : " + handlePos);
+                if (pack.handle.handlePosition == handlePos)
                 {
                     pack.info.SetValue(node, null);
                 }
