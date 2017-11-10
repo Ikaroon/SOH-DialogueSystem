@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Reflection;
 
 namespace SpyOnHuman.DialogSystem.NodeFramework
 {
@@ -48,21 +50,21 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         /// Discards one Node from the from Nodes list
         /// </summary>
         /// <param name="node">The Node to delete from the from list</param>
-        public bool DiscardFromConnection(Node node)
+        public bool DiscardFromConnection(Node node, Vector2 handlePos)
         {
             if (froms.Count <= 1)
             {
                 DiscardConnection();
                 return true;
             }
-            for (int c = 0; c < froms.Count; c++)
+            for (int f = 0; f < froms.Count; f++)
             {
-                if (froms[c] == node)
+                if (froms[f] == node && fromPositions[f] == handlePos)
                 {
-                    DiscardConnectionFromNode(node, ConnectionType.Output);
-                    froms.RemoveAt(c);
-                    fromPositions.RemoveAt(c);
-                    return true;
+                    DiscardConnectionFromNode(node, handlePos, ConnectionType.Output);
+                    froms.RemoveAt(f);
+                    fromPositions.RemoveAt(f);
+                    return false;
                 }
             }
             return false;
@@ -73,14 +75,13 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         /// </summary>
         public void DiscardConnection()
         {
-            foreach (Node node in froms)
+            for (int f = 0; f < froms.Count; f++)
             {
-                DiscardConnectionFromNode(node, ConnectionType.Output);
+                DiscardConnectionFromNode(froms[f], fromPositions[f], ConnectionType.Output);
             }
-            DiscardConnectionFromNode(to, ConnectionType.Input);
+            DiscardConnectionFromNode(to, toPosition, ConnectionType.Input);
             froms.Clear();
             to = null;
-            DestroyImmediate(this);
         }
 
         /// <summary>
@@ -88,22 +89,11 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         /// </summary>
         /// <param name="node">The Node which should lose it's reference to this connection</param>
         /// <param name="type">The type of handle which should be cleared</param>
-        private void DiscardConnectionFromNode(Node node, ConnectionType type)
+        private void DiscardConnectionFromNode(Node node, Vector2 handlePos, ConnectionType type)
         {
             List<NodeHandlePackage> packs = GetConnections(node, type);
             foreach (NodeHandlePackage pack in packs)
             {
-                Vector2 handlePos = Vector2.zero;
-
-                if (type == ConnectionType.Input)
-                {
-                    handlePos = toPosition;
-                } else
-                {
-                    handlePos = fromPositions[froms.IndexOf(node)];
-                }
-
-                Debug.Log(pack.handle.handlePosition + " : " + handlePos);
                 if (pack.handle.handlePosition == handlePos)
                 {
                     pack.info.SetValue(node, null);
@@ -118,11 +108,16 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         /// <param name="fromPos">The position of the handle of the added Node</param>
         public void AddFrom(Node from, Vector2 fromPos)
         {
-            if (!Contains(from, ConnectionPart.From))
+            if (!Contains(from, fromPos, ConnectionPart.From))
             {
                 froms.Add(from);
                 fromPositions.Add(fromPos);
             }
+        }
+
+        public bool Contains(Node node, Vector2 handlePos, ConnectionType direction)
+        {
+            return Contains(node, handlePos, (ConnectionPart)(-(int)direction + 1));
         }
 
         /// <summary>
@@ -131,15 +126,15 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         /// <param name="node">The Node which should be contained</param>
         /// <param name="direction">The part which should store the Node</param>
         /// <returns>Returns True if the Node is stored and False otherwise</returns>
-        public bool Contains(Node node, ConnectionPart direction)
+        public bool Contains(Node node, Vector2 handlePos, ConnectionPart direction)
         {
             switch (direction)
             {
                 case ConnectionPart.From:
                     {
-                        foreach (Node cNode in froms)
+                        for (int f = 0; f < froms.Count; f++)
                         {
-                            if (cNode == node)
+                            if (froms[f] == node && fromPositions[f] == handlePos)
                             {
                                 return true;
                             }
@@ -207,15 +202,15 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         {
             List<NodeHandlePackage> fields = new List<NodeHandlePackage>();
 
-            System.Reflection.FieldInfo[] connectionFields = node.GetType().GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            FieldInfo[] connectionFields = node.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
 
             for (int i = 0; i < connectionFields.Length; i++)
             {
-                NodeHandleAttribute attribute = System.Attribute.GetCustomAttribute(connectionFields[i], typeof(NodeHandleAttribute)) as NodeHandleAttribute;
+                NodeHandleAttribute attribute = Attribute.GetCustomAttribute(connectionFields[i], typeof(NodeHandleAttribute)) as NodeHandleAttribute;
 
                 if (attribute != null && attribute.handleType == type)
                 {
-                    if (connectionFields.GetType() == typeof(NodeConnection))
+                    if (connectionFields[i].FieldType == typeof(NodeConnection))
                     {
                         fields.Add(new NodeHandlePackage(attribute, connectionFields[i]));
                     }

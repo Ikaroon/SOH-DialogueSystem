@@ -35,9 +35,9 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             {
                 for (int subNodeID = 0; subNodeID < canvas.connections[c].froms.Count; subNodeID++)
                 {
-                    savedCanvas.connections[c].froms[subNodeID] = canvas.connections[c].froms[subNodeID];
+                    savedCanvas.connections[c].froms[subNodeID] = savedCanvas.nodes[canvas.nodes.IndexOf(canvas.connections[c].froms[subNodeID])];
                 }
-                savedCanvas.connections[c].to = canvas.connections[c].to;
+                savedCanvas.connections[c].to = savedCanvas.nodes[canvas.nodes.IndexOf(canvas.connections[c].to)];
             }
 
             //Rebind Nodes to Connections
@@ -48,7 +48,6 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
                 for (int pn = 0; pn < InputPackagesNode.Count; pn++)
                 {
-                    Debug.Log(InputPackagesNode.Count + ":" + InputPackagesSaveNode.Count);
                     int savedNodeID = canvas.connections.IndexOf(InputPackagesNode[pn].info.GetValue(canvas.nodes[n]) as NodeConnection);
                     if (savedNodeID != -1)
                     {
@@ -219,9 +218,9 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             {
                 for (int subNodeID = 0; subNodeID < canvas.connections[c].froms.Count; subNodeID++)
                 {
-                    savedCanvas.connections[c].froms[subNodeID] = canvas.connections[c].froms[subNodeID];
+                    savedCanvas.connections[c].froms[subNodeID] = savedCanvas.nodes[canvas.nodes.IndexOf(canvas.connections[c].froms[subNodeID])];
                 }
-                savedCanvas.connections[c].to = canvas.connections[c].to;
+                savedCanvas.connections[c].to = savedCanvas.nodes[canvas.nodes.IndexOf(canvas.connections[c].to)];
             }
 
             //Rebind Nodes to Connections

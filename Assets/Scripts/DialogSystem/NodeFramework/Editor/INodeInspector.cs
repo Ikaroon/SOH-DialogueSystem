@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace SpyOnHuman.NodeFramework
+namespace SpyOnHuman.DialogSystem.NodeFramework
 {
     public interface INodeInspector
     {
