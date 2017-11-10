@@ -152,6 +152,11 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             this.minSize = new Vector2(768f, 320f);
         }
 
+        private void OnDestroy()
+        {
+            DestroyImmediate(canvas);
+        }
+
         private void OnLostFocus()
         {
             task = TaskType.None;

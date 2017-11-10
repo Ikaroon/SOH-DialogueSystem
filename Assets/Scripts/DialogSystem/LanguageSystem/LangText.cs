@@ -8,6 +8,7 @@ namespace SpyOnHuman.DialogSystem.LanguageSystem
     /// <summary>
     /// A text container which changes it's content with the active language
     /// </summary>
+    [System.Serializable]
     public class LangText
     {
         //--------------------------------\\

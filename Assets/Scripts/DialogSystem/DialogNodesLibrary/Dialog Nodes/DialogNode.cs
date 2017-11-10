@@ -9,14 +9,11 @@ namespace SpyOnHuman.DialogSystem
     [NodeData("Dialog", "A Dialog Node", 264f, 140f)]
     public class DialogNode : Node
     {
-        [NodeHandle(ConnectionType.Input, y: 16f)]
+        [NodeHandle(ConnectionType.Input, y: 36f)]
         public NodeConnection input;
 
-        [NodeHandle(ConnectionType.Output, y: 16f)]
+        [NodeHandle(ConnectionType.Output, y: 36f)]
         public NodeConnection output;
-
-        [NodeHandle(ConnectionType.Output, y: 48f)]
-        public NodeConnection outputA;
 
         public LangText text = new LangText();
 
