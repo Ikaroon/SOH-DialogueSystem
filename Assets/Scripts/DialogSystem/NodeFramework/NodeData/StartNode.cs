@@ -7,7 +7,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
     [NodeData("Start", "The Start Node", 320f, 140f)]
     public class StartNode : Node
     {
-        [NodeHandle(ConnectionType.Output, y: 16f)]
+        [NodeHandle(0, ConnectionType.Output, y: 16f)]
         public NodeConnection output;
     }
 }

@@ -48,7 +48,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                     List<NodeHandlePackage> fromsPackage = NodeOperator.GetConnections(savedCanvas.connections[c].froms[subNodeID], ConnectionType.Output);
                     for (int fp = 0; fp < fromsPackage.Count; fp++)
                     {
-                        if (fromsPackage[fp].handle.handlePosition == savedCanvas.connections[c].fromPositions[subNodeID])
+                        if (fromsPackage[fp].handle.ID == savedCanvas.connections[c].fromAttributes[subNodeID].ID)
                         {
                             fromsPackage[fp].info.SetValue(savedCanvas.connections[c].froms[subNodeID], savedCanvas.connections[c]);
                         }
@@ -57,7 +57,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 List<NodeHandlePackage> tosPackage = NodeOperator.GetConnections(savedCanvas.connections[c].to, ConnectionType.Input);
                 for (int fp = 0; fp < tosPackage.Count; fp++)
                 {
-                    if (tosPackage[fp].handle.handlePosition == savedCanvas.connections[c].toPosition)
+                    if (tosPackage[fp].handle.ID == savedCanvas.connections[c].toAttribute.ID)
                     {
                         tosPackage[fp].info.SetValue(savedCanvas.connections[c].to, savedCanvas.connections[c]);
                     }
@@ -170,7 +170,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                     List<NodeHandlePackage> fromsPackage = NodeOperator.GetConnections(canvas.connections[c].froms[subNodeID], ConnectionType.Output);
                     for (int fp = 0; fp < fromsPackage.Count; fp++)
                     {
-                        if (fromsPackage[fp].handle.handlePosition == canvas.connections[c].fromPositions[subNodeID])
+                        if (fromsPackage[fp].handle.ID == canvas.connections[c].fromAttributes[subNodeID].ID)
                         {
                             fromsPackage[fp].info.SetValue(canvas.connections[c].froms[subNodeID], canvas.connections[c]);
                         }
@@ -179,7 +179,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 List<NodeHandlePackage> tosPackage = NodeOperator.GetConnections(canvas.connections[c].to, ConnectionType.Input);
                 for (int fp = 0; fp < tosPackage.Count; fp++)
                 {
-                    if (tosPackage[fp].handle.handlePosition == canvas.connections[c].toPosition)
+                    if (tosPackage[fp].handle.ID == canvas.connections[c].toAttribute.ID)
                     {
                         tosPackage[fp].info.SetValue(canvas.connections[c].to, canvas.connections[c]);
                     }
@@ -229,7 +229,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                     List<NodeHandlePackage> fromsPackage = NodeOperator.GetConnections(savedCanvas.connections[c].froms[subNodeID], ConnectionType.Output);
                     for (int fp = 0; fp < fromsPackage.Count; fp++)
                     {
-                        if (fromsPackage[fp].handle.handlePosition == savedCanvas.connections[c].fromPositions[subNodeID])
+                        if (fromsPackage[fp].handle.ID == savedCanvas.connections[c].fromAttributes[subNodeID].ID)
                         {
                             fromsPackage[fp].info.SetValue(savedCanvas.connections[c].froms[subNodeID], savedCanvas.connections[c]);
                         }
@@ -238,7 +238,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 List<NodeHandlePackage> tosPackage = NodeOperator.GetConnections(savedCanvas.connections[c].to, ConnectionType.Input);
                 for (int fp = 0; fp < tosPackage.Count; fp++)
                 {
-                    if (tosPackage[fp].handle.handlePosition == savedCanvas.connections[c].toPosition)
+                    if (tosPackage[fp].handle.ID == savedCanvas.connections[c].toAttribute.ID)
                     {
                         tosPackage[fp].info.SetValue(savedCanvas.connections[c].to, savedCanvas.connections[c]);
                     }

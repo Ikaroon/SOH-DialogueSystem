@@ -11,7 +11,10 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         #if UNITY_EDITOR
 
         #region Attribute Data
-        
+
+        //The unique ID for this handle.
+        public readonly int ID;
+
         //The type of the connection
         public readonly ConnectionType handleType;
 
@@ -32,8 +35,9 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         /// <param name="x">The local handle x position in the system</param>
         /// <param name="y">The local handle y position in the system</param>
         /// <param name="tooltip">The tooltip in the editor</param>
-        public NodeHandleAttribute(ConnectionType type, float y = -1f, string tooltip = "")
+        public NodeHandleAttribute(int ID, ConnectionType type, float y = -1f, string tooltip = "")
         {
+            this.ID = ID;
             handleType = type;
             handlePosition = new Vector2(0f, y);
             handleTooltip = tooltip;
