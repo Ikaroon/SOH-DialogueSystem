@@ -18,25 +18,36 @@ namespace SpyOnHuman.DialogSystem
 
         public void OnDrawNodeGUI(Rect rect)
         {
-            float height = (rect.height - 8f) / 3f;
+            InitStyles();
 
+            float height = (rect.height - 32f) / 3f;
+
+            GUILayout.BeginArea(new Rect(0f, 0f, rect.width, height), styleGroup);
             string copyTextA = node.decisionAText.text;
-            FillingTextField(new Rect(0f, 0f, rect.width, height), ref copyTextA, node.decisionAText[LanguageSystem.LangSys.DATA.mainLang]);
+            FillingTextField(new Rect(8f, 8f, rect.width - 16f, height - 40f), ref copyTextA, node.decisionAText[LanguageSystem.LangSys.DATA.mainLang]);
             node.decisionAText.text = copyTextA;
+            node.decisionAAudio.audio = (AudioClip)EditorGUI.ObjectField(new Rect(8f, height - 24f, rect.width - 16f, 16f), node.decisionAAudio.audio, typeof(AudioClip), false);
+            GUILayout.EndArea();
 
+            GUILayout.BeginArea(new Rect(0f, height + 16f, rect.width, height), styleGroup);
             string copyTextB = node.decisionBText.text;
-            FillingTextField(new Rect(0f, height + 4f, rect.width, height), ref copyTextB, node.decisionBText[LanguageSystem.LangSys.DATA.mainLang]);
+            FillingTextField(new Rect(8f, 8f, rect.width - 16f, height - 40f), ref copyTextB, node.decisionBText[LanguageSystem.LangSys.DATA.mainLang]);
             node.decisionBText.text = copyTextB;
+            node.decisionBAudio.audio = (AudioClip)EditorGUI.ObjectField(new Rect(8f, height - 24f, rect.width - 16f, 16f), node.decisionBAudio.audio, typeof(AudioClip), false);
+            GUILayout.EndArea();
 
+            GUILayout.BeginArea(new Rect(0f, height * 2f + 32f, rect.width, height), styleGroup);
             string copyTextC = node.decisionCText.text;
-            FillingTextField(new Rect(0f, height * 2f + 8f, rect.width, height), ref copyTextC, node.decisionCText[LanguageSystem.LangSys.DATA.mainLang]);
+            FillingTextField(new Rect(8f, 8f, rect.width - 16f, height - 40f), ref copyTextC, node.decisionCText[LanguageSystem.LangSys.DATA.mainLang]);
             node.decisionCText.text = copyTextC;
+            node.decisionCAudio.audio = (AudioClip)EditorGUI.ObjectField(new Rect(8f, height - 24f, rect.width - 16f, 16f), node.decisionCAudio.audio, typeof(AudioClip), false);
+            GUILayout.EndArea();
         }
 
         #region Extra Styles
 
         //The Styles used for the editor window
-        private static GUIStyle styleTextField, styleTextFieldEmpty;
+        private static GUIStyle styleTextField, styleTextFieldEmpty, styleGroup;
 
         /// <summary>
         /// Initialize the Styles used for the character editor
@@ -59,6 +70,8 @@ namespace SpyOnHuman.DialogSystem
             styleTextFieldEmpty.fontSize = styleTextField.fontSize;
             styleTextFieldEmpty.normal.textColor *= 0.5f;
 
+            styleGroup = GUI.skin.GetStyle("GroupBox");
+
         }
 
         #endregion
@@ -73,8 +86,6 @@ namespace SpyOnHuman.DialogSystem
         /// <param name="placeholder">The placeholder for the field</param>
         void FillingTextField(Rect rect, ref string input, string placeholder)
         {
-            InitStyles();
-
             input = GUI.TextField(rect, input, styleTextField);
             if (input == "")
             {

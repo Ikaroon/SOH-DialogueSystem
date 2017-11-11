@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36df6c1eee1df154e93100f218bf3573, type: 3}
   m_Name: DATA
   m_EditorClassIdentifier: 
-  characters: []
+  characters:
+  - {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
   dialogs:
-  - {fileID: 11400000, guid: 539cc954dbfa8bb429b3d070a0926c51, type: 2}
+  - {fileID: 0}

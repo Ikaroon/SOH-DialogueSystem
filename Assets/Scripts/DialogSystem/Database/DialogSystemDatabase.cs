@@ -9,6 +9,50 @@ namespace SpyOnHuman.DialogSystem
 {
     public class DialogSystemDatabase : ScriptableObject
     {
+
+        //--------------------------------\\
+        //-----------< EDITOR >-----------\\
+        //--------------------------------\\
+
+        #if UNITY_EDITOR
+
+        #region Database Static Methods
+
+        public static Character CharacterDropDown(Rect rect, Character character)
+        {
+            List<GUIContent> contents = new List<GUIContent>();
+            contents.Add(new GUIContent("Player"));
+            for (int c = 0; c < DATA.characters.Count; c++)
+            {
+                contents.Add(new GUIContent(DATA.characters[c].forename + " " + DATA.characters[c].surname, DATA.characters[c].profile));
+            }
+
+            int index = UnityEditor.EditorGUI.Popup(rect, DATA.characters.IndexOf(character) + 1, contents.ToArray());
+
+            if (index == 0)
+            {
+                return null;
+            }
+            return DATA.characters[index - 1];
+            /*
+            UnityEditor.GenericMenu menu = new UnityEditor.GenericMenu();
+
+            for (int c = 0; c < DATA.characters.Count; c++)
+            {
+                menu.AddItem(new GUIContent(DATA.characters[c].forename + " " + DATA.characters[c].surname), false, callback, c);
+            }
+
+            menu.DropDown(rect);*/
+        }
+
+        #endregion
+
+        #endif
+
+        //--------------------------------\\
+        //-----------< PLAYER >-----------\\
+        //--------------------------------\\
+
         #region Constant Data
 
         //The relative path inside the Resources folder
@@ -82,5 +126,6 @@ namespace SpyOnHuman.DialogSystem
         public List<DialogCanvas> dialogs = new List<DialogCanvas>();
 
         #endregion
+
     }
 }

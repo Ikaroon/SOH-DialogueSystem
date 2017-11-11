@@ -6,7 +6,7 @@ using SpyOnHuman.DialogSystem.LanguageSystem;
 
 namespace SpyOnHuman.DialogSystem
 {
-    [NodeData("Player Decision", "A Dialog Node", 256f, 256f, true, 1f, 0.8f, 0.1f)]
+    [NodeData("Player Decision", "A Dialog Node", 256f, 272f, true, 1f, 0.8f, 0.1f)]
     public class TextDecisionNode : Node
     {
         [NodeHandle(0, ConnectionType.Input, 0f)]
@@ -22,8 +22,13 @@ namespace SpyOnHuman.DialogSystem
         public NodeConnection decisionC;
 
         public LangText decisionAText = new LangText();
+        public LangAudio decisionAAudio = new LangAudio();
+
         public LangText decisionBText = new LangText();
+        public LangAudio decisionBAudio = new LangAudio();
+
         public LangText decisionCText = new LangText();
+        public LangAudio decisionCAudio = new LangAudio();
 
     }
 }
