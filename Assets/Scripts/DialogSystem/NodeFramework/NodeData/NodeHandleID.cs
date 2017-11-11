@@ -8,12 +8,12 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
     public class NodeHandleID
     {
         public int ID;
-        public Vector2 handlePosition;
+        public Vector2 position;
 
-        public NodeHandleID(int ID, Vector2 handlePosition)
+        public NodeHandleID(int ID, Vector2 position)
         {
             this.ID = ID;
-            this.handlePosition = handlePosition;
+            this.position = position;
         }
     }
 }

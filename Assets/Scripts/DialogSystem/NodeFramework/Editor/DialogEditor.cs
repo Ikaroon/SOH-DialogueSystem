@@ -154,7 +154,41 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
         private void OnDestroy()
         {
+            // If no canvas was initialized then skip destrcution
+            if (canvas == null)
+            {
+                System.GC.Collect();
+                return;
+            }
+
+            //Destroy all temporary nodes
+            for (int n = canvas.nodes.Count - 1; n >= 0 ; n--)
+            {
+                DestroyImmediate(canvas.nodes[n]);
+                canvas.nodes.RemoveAt(n);
+            }
+
+            //Destroy all temporary connections
+            for (int c = canvas.connections.Count - 1; c >= 0; c--)
+            {
+                DestroyImmediate(canvas.connections[c]);
+                canvas.connections.RemoveAt(c);
+            }
+
+            //Destroy Start Node
+            DestroyImmediate(canvas.startNode);
+            canvas.startNode = null;
+
+            //Destroy the temporary canvas
             DestroyImmediate(canvas);
+            canvas = null;
+
+            System.GC.Collect();
+        }
+
+        private void OnDisable()
+        {
+            OnDestroy();
         }
 
         private void OnLostFocus()
@@ -326,6 +360,12 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             if (!canvas)
             {
                 return;
+            }
+
+            //Draw the Start Node
+            if (IsVisible(positionOffset, displayRect, canvas.startNode))
+            {
+                DrawNode(positionOffset, canvas.startNode);
             }
 
             //Iterate over all Nodes and draw them
@@ -917,7 +957,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             //Draw content of node
             GUILayout.BeginArea(new Rect(8f, 30f, node.size.x - 16f, node.size.y - 38f));
             Editor editor = Editor.CreateEditor(node);
-            INodeInspector nodeEditor = (INodeInspector)editor;
+            INodeInspector nodeEditor = editor as INodeInspector;
             if (nodeEditor != null)
             {
                 nodeEditor.OnDrawNodeGUI(new Rect(0f, 0f, node.size.x - 16f, node.size.y - 38f));
@@ -926,6 +966,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             {
                 editor.OnInspectorGUI();
             }
+            DestroyImmediate(editor);
             GUILayout.EndArea();
 
 
@@ -978,6 +1019,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                     if (connection != -1)
                     {
                         canvas.connections[connection].DiscardConnection();
+                        DestroyImmediate(canvas.connections[connection]);
                         canvas.connections.RemoveAt(connection);
                     }
                 }
@@ -992,6 +1034,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                     {
                         if (canvas.connections[connection].DiscardFromConnection(node, outputHandles[oh].handle.ID))
                         {
+                            DestroyImmediate(canvas.connections[connection]);
                             canvas.connections.RemoveAt(connection);
                         }
                     }
@@ -999,7 +1042,9 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
                 //Remove Node
 
-                canvas.nodes.Remove(node);
+                int nodeID = canvas.nodes.IndexOf(node);
+                DestroyImmediate(node);
+                canvas.nodes.RemoveAt(nodeID);
                 task = TaskType.None;
                 Repaint();
             }
@@ -1093,7 +1138,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
             foreach (NodeHandlePackage handle in handles)
             {
-                MouseEventPackage mouseEventPackage = DrawHandle(type, anchorPos + handle.handle.handlePosition, handle.info.GetValue(node) != null);
+                MouseEventPackage mouseEventPackage = DrawHandle(type, anchorPos + handle.handle.HandlePosition(size), handle.info.GetValue(node) != null);
 
                 //Handle Events
                 HandleContextEvent(mouseEventPackage, node, handle.handle, handle.info);
@@ -1175,6 +1220,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                     if (connection != -1)
                     {
                         canvas.connections[connection].DiscardConnection();
+                        DestroyImmediate(canvas.connections[connection]);
                         canvas.connections.RemoveAt(connection);
                     }
                 }
@@ -1184,6 +1230,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                     {
                         if (canvas.connections[connection].DiscardFromConnection(eventPackage.node, eventPackage.attribute.ID))
                         {
+                            DestroyImmediate(canvas.connections[connection]);
                             canvas.connections.RemoveAt(connection);
                         }
                     }
@@ -1386,20 +1433,24 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             for (int n = 0; n < connection.froms.Count; n++)
             {
                 Vector2 newPos = offset + connection.froms[n].position + new Vector2(connection.froms[n].size.x / 2f, -connection.froms[n].size.y / 2f);
-                newPos += connection.fromAttributes[n].handlePosition;
+                newPos += connection.fromAttributes[n].position;
                 newPos += new Vector2(9f, 9f);
                 posFroms.Add(newPos);
             }
-
+            
             Vector2 toPos = offset;
             toPos += connection.to.position + new Vector2(-connection.to.size.x / 2f, -connection.to.size.y / 2f);
-            toPos += connection.toAttribute.handlePosition;
+            toPos += connection.toAttribute.position;
             toPos += new Vector2(-9f, 9f);
+
 
             for (int c = 0; c < posFroms.Count; c++)
             {
-                ConnectionContextEvent(canvas.connections.IndexOf(connection), c, posFroms[c], toPos);
-                Handles.DrawBezier(posFroms[c], toPos, posFroms[c], toPos, Color.white, null, 3f);
+                if (rect.Contains(posFroms[c]) || rect.Contains(toPos))
+                {
+                    ConnectionContextEvent(canvas.connections.IndexOf(connection), c, posFroms[c], toPos);
+                    Handles.DrawBezier(posFroms[c], toPos, posFroms[c], toPos, Color.white, null, 3f);
+                }
             }
         }
 
@@ -1411,7 +1462,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
                 Vector2 anchor = offset + eventPackage.node.position - new Vector2(0f, eventPackage.node.size.y * 0.5f);
                 anchor += new Vector2(((int)eventPackage.attribute.handleType * 2 - 1) * (eventPackage.node.size.x * 0.5f), 0f);
-                anchor += eventPackage.attribute.handlePosition;
+                anchor += eventPackage.attribute.HandlePosition(eventPackage.node.size);
                 anchor += new Vector2(((int)eventPackage.attribute.handleType * 2 - 1) * 9f, 9f); 
                 Handles.DrawAAPolyLine(4f, anchor, Event.current.mousePosition);
             }
@@ -1452,7 +1503,9 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
                 if (connection.DiscardFromConnection(node, connection.fromAttributes[idPackage.fromID].ID))
                 {
-                    canvas.connections.Remove(connection);
+                    int connectionID = canvas.connections.IndexOf(connection);
+                    DestroyImmediate(connection);
+                    canvas.connections.RemoveAt(connectionID);
                 }
                 task = TaskType.None;
                 Repaint();
@@ -1487,6 +1540,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             {
                 if (canvas.connections[oldOutputConnection].DiscardFromConnection(package.node, package.attribute.ID))
                 {
+                    DestroyImmediate(canvas.connections[oldOutputConnection]);
                     canvas.connections.RemoveAt(oldOutputConnection);
                 }
             }
@@ -1495,15 +1549,15 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
             if (oldInputConnection != -1)
             {
-                canvas.connections[oldInputConnection].AddFrom(package.node, new NodeHandleID(package.attribute.ID, package.attribute.handlePosition));
+                canvas.connections[oldInputConnection].AddFrom(package.node, new NodeHandleID(package.attribute.ID, package.attribute.HandlePosition(package.node.size)));
                 
                 package.info.SetValue(package.node, canvas.connections[oldInputConnection]);
 
                 return;
             }
 
-            NodeConnection newConnection = NodeConnection.CreateConnection(package.node, new NodeHandleID(package.attribute.ID, package.attribute.handlePosition),
-                                                                            inputNode, new NodeHandleID(inputAttribute.ID, inputAttribute.handlePosition));
+            NodeConnection newConnection = NodeConnection.CreateConnection(package.node, new NodeHandleID(package.attribute.ID, package.attribute.HandlePosition(package.node.size)),
+                                                                            inputNode, new NodeHandleID(inputAttribute.ID, inputAttribute.HandlePosition(inputNode.size)));
             
             canvas.connections.Add(newConnection);
             info.SetValue(inputNode, newConnection);
@@ -1518,6 +1572,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             {
                 if (canvas.connections[oldOutputConnection].DiscardFromConnection(outputNode, outputAttribute.ID))
                 {
+                    DestroyImmediate(canvas.connections[oldOutputConnection]);
                     canvas.connections.RemoveAt(oldOutputConnection);
                 }
             }
@@ -1526,15 +1581,15 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
             if (oldInputConnection != -1)
             {
-                canvas.connections[oldInputConnection].AddFrom(outputNode, new NodeHandleID(outputAttribute.ID, outputAttribute.handlePosition));
+                canvas.connections[oldInputConnection].AddFrom(outputNode, new NodeHandleID(outputAttribute.ID, outputAttribute.HandlePosition(outputNode.size)));
 
                 info.SetValue(outputNode, canvas.connections[oldInputConnection]);
 
                 return;
             }
 
-            NodeConnection newConnection = NodeConnection.CreateConnection(outputNode, new NodeHandleID(outputAttribute.ID, outputAttribute.handlePosition),
-                                                                            package.node, new NodeHandleID(package.attribute.ID, package.attribute.handlePosition));
+            NodeConnection newConnection = NodeConnection.CreateConnection(outputNode, new NodeHandleID(outputAttribute.ID, outputAttribute.HandlePosition(outputNode.size)),
+                                                                            package.node, new NodeHandleID(package.attribute.ID, package.attribute.HandlePosition(package.node.size)));
 
             canvas.connections.Add(newConnection);
             info.SetValue(outputNode, newConnection);

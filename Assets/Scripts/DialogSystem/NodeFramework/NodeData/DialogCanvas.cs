@@ -33,6 +33,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         {
             canvasName = name;
             canvasDescription = description;
+            startNode = StartNode.CreateNode<StartNode>(Vector2.zero);
             //The saving of the first timestamp: aka "Creation Timestamp"
             canvasTimestamp = System.DateTime.Now.ToString("yyyy/MM/dd-HH:mm:ss"); //TODO: Correct Timestamp
         }

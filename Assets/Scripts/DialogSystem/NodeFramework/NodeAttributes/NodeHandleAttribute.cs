@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Northwind.Essentials;
 
 namespace SpyOnHuman.DialogSystem.NodeFramework
 {
@@ -19,7 +20,10 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         public readonly ConnectionType handleType;
 
         //The local handle position in the system
-        public readonly Vector2 handlePosition;
+        public readonly float height;
+
+        //The value if y should be used as fixed value
+        public readonly bool isFixed;
 
         //The tooltip in the editor
         public readonly string handleTooltip;
@@ -35,16 +39,22 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         /// <param name="x">The local handle x position in the system</param>
         /// <param name="y">The local handle y position in the system</param>
         /// <param name="tooltip">The tooltip in the editor</param>
-        public NodeHandleAttribute(int ID, ConnectionType type, float y = -1f, string tooltip = "")
+        public NodeHandleAttribute(int ID, ConnectionType type, float y = -1f, bool fixedPosition = true, string tooltip = "")
         {
             this.ID = ID;
             handleType = type;
-            handlePosition = new Vector2(0f, y);
+            height = y;
             handleTooltip = tooltip;
+            isFixed = fixedPosition;
+        }
+
+        public Vector2 HandlePosition(Vector2 size)
+        {
+            return VectorMath.Step(new Vector2(0f, height * (isFixed ? 1f : (size.y - 16f - 22f))), 16f);
         }
 
         #endregion
 
-        #endif
+#endif
     }
 }
