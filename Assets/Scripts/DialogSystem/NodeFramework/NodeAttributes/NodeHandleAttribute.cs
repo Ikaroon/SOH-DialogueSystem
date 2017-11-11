@@ -50,11 +50,11 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
         public Vector2 HandlePosition(Vector2 size)
         {
-            return VectorMath.Step(new Vector2(0f, height * (isFixed ? 1f : (size.y - 16f - 22f))), 16f);
+            return VectorMath.Step(new Vector2(0f, 32f + height * (isFixed ? 1f : (size.y - 16f - 32f))), 16f);
         }
 
         #endregion
 
-#endif
+        #endif
     }
 }

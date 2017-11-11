@@ -173,6 +173,22 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             }
         }
 
+        public void UpdateFrom(Node node, int ID, Vector2 newPos)
+        {
+            for (int f = 0; f < froms.Count; f++)
+            {
+                if (froms[f] == node && fromAttributes[f].ID == ID)
+                {
+                    fromAttributes[f].position = newPos;
+                }
+            }
+        }
+
+        public void UpdateTo(Vector2 newPos)
+        {
+            toAttribute.position = newPos;
+        }
+
         #endregion
 
         #region Connection Editor Static Methods

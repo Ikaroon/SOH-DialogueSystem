@@ -6,19 +6,19 @@ using SpyOnHuman.DialogSystem.LanguageSystem;
 
 namespace SpyOnHuman.DialogSystem
 {
-    [NodeData("Player Decision", "A Dialog Node", 256f, 256f)]
+    [NodeData("Player Decision", "A Dialog Node", 256f, 256f, true, 1f, 0.8f, 0.1f)]
     public class TextDecisionNode : Node
     {
-        [NodeHandle(0, ConnectionType.Input, 32f)]
+        [NodeHandle(0, ConnectionType.Input, 0f)]
         public NodeConnection input;
 
-        [NodeHandle(0, ConnectionType.Output, 1f/3f, fixedPosition: false)]
+        [NodeHandle(0, ConnectionType.Output, 1f/6f, fixedPosition: false)]
         public NodeConnection decisionA;
 
-        [NodeHandle(1, ConnectionType.Output, 2f / 3f, fixedPosition: false)]
+        [NodeHandle(1, ConnectionType.Output, 3f / 6f, fixedPosition: false)]
         public NodeConnection decisionB;
 
-        [NodeHandle(2, ConnectionType.Output, 1f, fixedPosition: false)]
+        [NodeHandle(2, ConnectionType.Output, 5f / 6f, fixedPosition: false)]
         public NodeConnection decisionC;
 
         public LangText decisionAText = new LangText();

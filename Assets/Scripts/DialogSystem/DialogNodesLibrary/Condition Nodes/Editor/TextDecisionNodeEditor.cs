@@ -25,12 +25,12 @@ namespace SpyOnHuman.DialogSystem
             node.decisionAText.text = copyTextA;
 
             string copyTextB = node.decisionBText.text;
-            FillingTextField(new Rect(0f, height + 4f, rect.width, height), ref copyTextB, node.decisionAText[LanguageSystem.LangSys.DATA.mainLang]);
-            node.decisionAText.text = copyTextB;
+            FillingTextField(new Rect(0f, height + 4f, rect.width, height), ref copyTextB, node.decisionBText[LanguageSystem.LangSys.DATA.mainLang]);
+            node.decisionBText.text = copyTextB;
 
             string copyTextC = node.decisionCText.text;
-            FillingTextField(new Rect(0f, height * 2f + 8f, rect.width, height), ref copyTextC, node.decisionAText[LanguageSystem.LangSys.DATA.mainLang]);
-            node.decisionAText.text = copyTextC;
+            FillingTextField(new Rect(0f, height * 2f + 8f, rect.width, height), ref copyTextC, node.decisionCText[LanguageSystem.LangSys.DATA.mainLang]);
+            node.decisionCText.text = copyTextC;
         }
 
         #region Extra Styles

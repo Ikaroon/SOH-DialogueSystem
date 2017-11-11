@@ -37,6 +37,24 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
         //-----------------------------------------------------------------------------------------
 
+        #region Helper Methods
+
+        private Vector2 SnapToGrid(Vector2 position, Vector2 size)
+        {
+            float halfX = size.x / 2f;
+            float halfY = size.y / 2f;
+
+            Vector2 add = new Vector2(8f * (halfX % 16f != 0f ? 1f : 0f), 8f * (halfY % 16f != 0f ? 1f : 0f));
+
+            position = VectorMath.Step(position, 16f) + add;
+
+            return position;
+        }
+
+        #endregion
+
+        //-----------------------------------------------------------------------------------------
+
         #region Style Data
 
         private bool stylesLoaded = false;
@@ -477,7 +495,11 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         private void CreateNode(object obj)
         {
             TypePosPack pair = obj as TypePosPack;
-            canvas.nodes.Add(Node.CreateNode(pair.type, pair.pos));
+
+            Node node = Node.CreateNode(pair.type, pair.pos);
+            node.position = SnapToGrid(node.position, node.size);
+
+            canvas.nodes.Add(node);
         }
 
         private class TypePosPack {
@@ -708,7 +730,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
             if (canvas)
             {
-                AddNodesToMenu(ref menu, Vector2.zero);
+                AddNodesToMenu(ref menu, -nodeFieldScroll);
             }
             else
             {
@@ -880,6 +902,8 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             public NodeHandleAttribute attribute;
             public FieldInfo info;
 
+            public NodeDataAttribute data;
+
         }
 
         #endregion
@@ -947,20 +971,25 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             Rect nodeRect = new Rect(offset + node.position - node.size / 2f + new Vector2(-nodeHandleWidth, 0f), node.size + new Vector2(nodeHandleWidth * 2f, 0f));
             GUILayout.BeginArea(nodeRect);
 
+            Color oldColor = GUI.backgroundColor;
+            GUI.backgroundColor = nodeData.nodeColor;
             GUILayout.BeginArea(new Rect(nodeHandleWidth, 0f, nodeRect.width - nodeHandleWidth * 2f, nodeRect.height), nodeBGStyle);
+            GUI.backgroundColor = oldColor;
+
             Rect headerRect = new Rect(0f, 0f, nodeRect.width - nodeHandleWidth * 2f, 22f);
             GUI.Label(headerRect, new GUIContent(nodeData.nodeName), nodeHeaderStyle);
 
+            ResizeNodeEvent(node, nodeData, new Rect(0f, 0f, nodeRect.width - nodeHandleWidth * 2f, nodeRect.height));
             NodeContextEvent(node, headerRect);
             NodeMoveEvent(node, headerRect);
 
             //Draw content of node
-            GUILayout.BeginArea(new Rect(8f, 30f, node.size.x - 16f, node.size.y - 38f));
+            GUILayout.BeginArea(new Rect(8f, 32f, node.size.x - 16f, node.size.y - 48f));
             Editor editor = Editor.CreateEditor(node);
             INodeInspector nodeEditor = editor as INodeInspector;
             if (nodeEditor != null)
             {
-                nodeEditor.OnDrawNodeGUI(new Rect(0f, 0f, node.size.x - 16f, node.size.y - 38f));
+                nodeEditor.OnDrawNodeGUI(new Rect(0f, 0f, node.size.x - 16f, node.size.y - 48f));
             }
             else
             {
@@ -1081,7 +1110,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 Vector2 anchorPoint = ((NodeEventPackage)taskObject).anchor;
                 node.position = new Vector2(node.position.x + (Event.current.mousePosition.x - anchorPoint.x),
                                             node.position.y + (Event.current.mousePosition.y - anchorPoint.y));
-                node.position = VectorMath.Step(node.position, 16f);
+                node.position = SnapToGrid(node.position, node.size);
                 mouseActionUsed = true; //Disable all other mouse events from now on!
                 Repaint();
             }
@@ -1093,6 +1122,200 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             {
                 task = TaskType.None;
                 mouseActionUsed = true; //Disable all other mouse events from now on!
+            }
+        }
+
+        private void ResizeNodeEvent(Node node, NodeDataAttribute attribute, Rect rect)
+        {
+            if (!attribute.resizeable)
+            {
+                return;
+            }
+
+            Rect upperLeft = new Rect(0f, 0f, 8f, 8f);
+            Rect upperRight = new Rect(rect.width - 8f, 0f, 8f, 8f);
+            Rect bottomRight = new Rect(rect.width - 8f, rect.height - 8f, 8f, 8f);
+            Rect bottomLeft = new Rect(0f, rect.height - 8f, 8f, 8f);
+
+            EditorGUIUtility.AddCursorRect(upperLeft, MouseCursor.ResizeUpLeft);
+            EditorGUIUtility.AddCursorRect(upperRight, MouseCursor.ResizeUpRight);
+            EditorGUIUtility.AddCursorRect(bottomRight, MouseCursor.ResizeUpLeft);
+            EditorGUIUtility.AddCursorRect(bottomLeft, MouseCursor.ResizeUpRight);
+
+            if (MouseActionInRect(rect, EventType.mouseDown, MouseButton.Left))
+            {
+                NodeEventPackage eventPackage = new NodeEventPackage();
+                eventPackage.anchor = Event.current.mousePosition;
+                eventPackage.node = node;
+                eventPackage.data = attribute;
+                if (upperLeft.Contains(Event.current.mousePosition)) //Resize Upper Left
+                {
+                    RegisterTask(TaskType.ResizeNodeUpperLeft, eventPackage);
+                    OnResetTask = ResetNodeResizeTask;
+                    mouseActionUsed = true;
+                }
+                else if (upperRight.Contains(Event.current.mousePosition)) //Resize Upper Right
+                {
+                    RegisterTask(TaskType.ResizeNodeUpperRight, eventPackage);
+                    OnResetTask = ResetNodeResizeTask;
+                    mouseActionUsed = true;
+                }
+                else if(bottomRight.Contains(Event.current.mousePosition)) //Resize Bottom Right
+                {
+                    RegisterTask(TaskType.ResizeNodeBottomRight, eventPackage);
+                    OnResetTask = ResetNodeResizeTask;
+                    mouseActionUsed = true;
+                } else if (bottomLeft.Contains(Event.current.mousePosition)) //Resize Bottom Left
+                {
+                    RegisterTask(TaskType.ResizeNodeBottomLeft, eventPackage);
+                    OnResetTask = ResetNodeResizeTask;
+                    mouseActionUsed = true;
+                }
+            } else if (MouseAction(EventType.mouseDrag, MouseButton.Left))
+            {
+                switch(task)
+                {
+                    case TaskType.ResizeNodeUpperLeft:
+                        {
+                            NodeEventPackage eventPackage = (NodeEventPackage)taskObject;
+                            if (eventPackage.node == node)
+                            {
+                                Vector2 change = Event.current.mousePosition - eventPackage.anchor;
+                                change = VectorMath.Step(change, 16f);
+
+                                change = VectorMath.Max(attribute.nodeSize, eventPackage.node.size - change) - eventPackage.node.size;
+
+                                eventPackage.node.size = eventPackage.node.size + change;
+                                eventPackage.node.position = eventPackage.node.position - change / 2f;
+
+                                if (change.y != 0f)
+                                {
+                                    RemapHandles(node);
+                                }
+
+                                Repaint();
+
+                                mouseActionUsed = true;
+                            }
+                        }
+                        break;
+                    case TaskType.ResizeNodeUpperRight:
+                        {
+                            NodeEventPackage eventPackage = (NodeEventPackage)taskObject;
+                            if (eventPackage.node == node)
+                            {
+                                Vector2 change = Event.current.mousePosition - eventPackage.anchor;
+                                change = VectorMath.Step(change, 16f);
+
+                                change = VectorMath.Max(attribute.nodeSize, eventPackage.node.size + new Vector2(change.x, -change.y)) - eventPackage.node.size;
+
+                                eventPackage.anchor.x += change.x;
+                                taskObject = eventPackage;
+
+                                eventPackage.node.size = eventPackage.node.size + new Vector2(change.x, change.y);
+                                eventPackage.node.position = eventPackage.node.position + new Vector2(change.x, -change.y) / 2f;
+
+                                if (change.y != 0f)
+                                {
+                                    RemapHandles(node);
+                                }
+
+                                Repaint();
+
+                                mouseActionUsed = true;
+                            }
+                        }
+                        break;
+                    case TaskType.ResizeNodeBottomRight:
+                        {
+                            NodeEventPackage eventPackage = (NodeEventPackage)taskObject;
+                            if (eventPackage.node == node)
+                            {
+                                Vector2 change = Event.current.mousePosition - eventPackage.anchor;
+                                change = VectorMath.Step(change, 16f);
+
+                                change = VectorMath.Max(attribute.nodeSize, eventPackage.node.size + change) - eventPackage.node.size;
+
+                                eventPackage.anchor += change;
+                                taskObject = eventPackage;
+
+                                eventPackage.node.size = eventPackage.node.size + change;
+                                eventPackage.node.position = eventPackage.node.position + change / 2f;
+
+                                if (change.y != 0f)
+                                {
+                                    RemapHandles(node);
+                                }
+
+                                Repaint();
+
+                                mouseActionUsed = true;
+                            }
+                        }
+                        break;
+                    case TaskType.ResizeNodeBottomLeft:
+                        {
+                            NodeEventPackage eventPackage = (NodeEventPackage)taskObject;
+                            if (eventPackage.node == node)
+                            {
+                                Vector2 change = Event.current.mousePosition - eventPackage.anchor;
+                                change = VectorMath.Step(change, 16f);
+
+                                change = VectorMath.Max(attribute.nodeSize, eventPackage.node.size + new Vector2(-change.x, change.y)) - eventPackage.node.size;
+
+                                eventPackage.anchor.y += change.y;
+                                taskObject = eventPackage;
+
+                                eventPackage.node.size = eventPackage.node.size + new Vector2(change.x, change.y);
+                                eventPackage.node.position = eventPackage.node.position + new Vector2(-change.x, change.y) / 2f;
+
+                                if (change.y != 0f)
+                                {
+                                    RemapHandles(node);
+                                }
+
+                                Repaint();
+
+                                mouseActionUsed = true;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
+        private void RemapHandles(Node node)
+        {
+            List<NodeHandlePackage> packages = NodeOperator.GetConnections(node, ConnectionType.Output);
+
+            foreach (NodeHandlePackage package in packages)
+            {
+                int connection = GetCurrentConnection(node, package.handle);
+                if (connection != -1)
+                {
+                    canvas.connections[connection].UpdateFrom(node, package.handle.ID, package.handle.HandlePosition(node.size));
+                }
+            }
+
+            packages = NodeOperator.GetConnections(node, ConnectionType.Input);
+
+            foreach (NodeHandlePackage package in packages)
+            {
+                int connection = GetCurrentConnection(node, package.handle);
+                if (connection != -1)
+                {
+                    canvas.connections[connection].UpdateTo(package.handle.HandlePosition(node.size));
+                }
+            }
+
+        }
+
+        private void ResetNodeResizeTask()
+        {
+            if ((task == TaskType.ResizeNodeUpperLeft || task == TaskType.ResizeNodeUpperRight || task == TaskType.ResizeNodeBottomRight || task == TaskType.ResizeNodeBottomLeft) && MouseAction(EventType.mouseUp, MouseButton.Left))
+            {
+                task = TaskType.None;
+                Repaint();
             }
         }
 

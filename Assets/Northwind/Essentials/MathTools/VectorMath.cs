@@ -101,5 +101,19 @@ namespace Northwind.Essentials
             Vector3 AV = value - a;
             return Vector3.Dot(AV, AB) / Vector3.Dot(AB, AB);
         }
+
+        public static Vector2 Max(params Vector2[] vectors)
+        {
+            float xMax = float.MinValue;
+            float yMax = float.MinValue;
+
+            for (int v = 0; v < vectors.Length; v++)
+            {
+                xMax = Mathf.Max(xMax, vectors[v].x);
+                yMax = Mathf.Max(yMax, vectors[v].y);
+            }
+
+            return new Vector2(xMax, yMax);
+        }
     }
 }
