@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Name: DATA
   m_EditorClassIdentifier: 
   characters: []
-  dialogs: []
+  dialogs:
+  - {fileID: 11400000, guid: 539cc954dbfa8bb429b3d070a0926c51, type: 2}

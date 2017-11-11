@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SpyOnHuman.DialogSystem.NodeFramework;
+using SpyOnHuman.DialogSystem.LanguageSystem;
 
 namespace SpyOnHuman.DialogSystem
 {
-    [NodeData("Dialog", "A Node which refers to another Dialog Canvas", 144f, 64f, false, 0.1f, 0.5f, 0.9f)]
-    public class DialogNode : Node
+    [NodeData("Dialog Fragment", "A Dialog Node", 256f, 128f, true, 0.1f, 0.5f, 0.9f)]
+    public class DialogFragmentNode : Node
     {
         [NodeHandle(0, ConnectionType.Input, y: 0f)]
         public NodeConnection input;
@@ -14,6 +15,7 @@ namespace SpyOnHuman.DialogSystem
         [NodeHandle(0, ConnectionType.Output, y: 0f)]
         public NodeConnection output;
 
-        public DialogCanvas dialog;
+        public LangText text = new LangText();
+
     }
 }

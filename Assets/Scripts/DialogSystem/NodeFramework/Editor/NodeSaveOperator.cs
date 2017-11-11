@@ -6,7 +6,7 @@ using System.IO;
 
 namespace SpyOnHuman.DialogSystem.NodeFramework
 {
-    public class NodeSaveOperator
+    public class NodeSaveOperator : Editor
     {
         
         #region Save
@@ -14,14 +14,54 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         public static string Save(ref DialogCanvas canvas, string path = "")
         {
             //Copy Canvas
-            DialogCanvas savedCanvas = Object.Instantiate(canvas) as DialogCanvas;
+            DialogCanvas savedCanvas;
+
+            string npath = path.Replace(Application.dataPath, "Assets");
+            DialogCanvas loadedCanvas = AssetDatabase.LoadAssetAtPath<DialogCanvas>(npath);
+            if (loadedCanvas)
+            {
+                savedCanvas = loadedCanvas;
+
+                for (int n = savedCanvas.nodes.Count - 1; n >= 0; n--)
+                {
+                    DestroyImmediate(savedCanvas.nodes[n], true);
+                }
+
+                for (int c = savedCanvas.connections.Count - 1; c >= 0; c--)
+                {
+                    DestroyImmediate(savedCanvas.connections[c], true);
+                }
+
+                DestroyImmediate(savedCanvas.startNode, true);
+
+                savedCanvas.nodes = new List<Node>(new Node[canvas.nodes.Count]);
+                savedCanvas.connections = new List<NodeConnection>(new NodeConnection[canvas.connections.Count]);
+
+                savedCanvas.canvasName = canvas.canvasName;
+                savedCanvas.canvasDescription = canvas.canvasDescription;
+
+            } else
+            {
+                savedCanvas = Object.Instantiate(canvas) as DialogCanvas;
+            }
+
+            savedCanvas.canvasTimestamp = System.DateTime.Now.ToString("yyyy / MM / dd - HH:mm: ss");
 
             //Copy all Nodes
-            for (int n = 0; n < canvas.nodes.Count; n++)
+            for (int n = canvas.nodes.Count - 1; n >= 0; n--)
             {
+                if (canvas.nodes[n] == null)
+                {
+                    savedCanvas.nodes.RemoveAt(n);
+                    continue;
+                }
                 savedCanvas.nodes[n] = (Object.Instantiate(canvas.nodes[n]) as Node);
                 savedCanvas.nodes[n].name = canvas.nodes[n].name;
             }
+
+            //Copy Start Node
+            savedCanvas.startNode = (Object.Instantiate(canvas.startNode) as StartNode);
+            savedCanvas.startNode.name = canvas.startNode.name;
 
             //Copy all Connections
             for (int c = 0; c < canvas.connections.Count; c++)
@@ -29,15 +69,30 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 savedCanvas.connections[c] = (Object.Instantiate(canvas.connections[c]) as NodeConnection);
                 savedCanvas.connections[c].name = canvas.connections[c].name;
             }
-            
+
             //Rebind Connections to Nodes
             for (int c = 0; c < canvas.connections.Count; c++)
             {
                 for (int subNodeID = 0; subNodeID < canvas.connections[c].froms.Count; subNodeID++)
                 {
-                    savedCanvas.connections[c].froms[subNodeID] = savedCanvas.nodes[canvas.nodes.IndexOf(canvas.connections[c].froms[subNodeID])];
+                    if (canvas.connections[c].froms[subNodeID] == canvas.startNode)
+                    {
+                        savedCanvas.connections[c].froms[subNodeID] = savedCanvas.startNode;
+                    }
+                    else
+                    {
+                        savedCanvas.connections[c].froms[subNodeID] = savedCanvas.nodes[canvas.nodes.IndexOf(canvas.connections[c].froms[subNodeID])];
+                    }
                 }
-                savedCanvas.connections[c].to = savedCanvas.nodes[canvas.nodes.IndexOf(canvas.connections[c].to)];
+
+                if (canvas.connections[c].to == canvas.startNode)
+                {
+                    savedCanvas.connections[c].to = savedCanvas.startNode;
+                }
+                else
+                {
+                    savedCanvas.connections[c].to = savedCanvas.nodes[canvas.nodes.IndexOf(canvas.connections[c].to)];
+                }
             }
 
             //Rebind Nodes to Connections
@@ -70,14 +125,18 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             //Send copied files and canvas to saving
             return SaveCanvas(savedCanvas, newPath);
         }
-        
+
         public static string SaveCanvas(DialogCanvas canvas, string path)
         {
             if (string.IsNullOrEmpty(path))
             {
                 return "";
             }
-            AssetDatabase.CreateAsset(canvas, path);
+            if (AssetDatabase.GetAssetPath(canvas) == "")
+            {
+                AssetDatabase.CreateAsset(canvas, path);
+            }
+            SaveAllSubData(new ScriptableObject[] { canvas.startNode }, canvas);
             SaveAllSubData(canvas.nodes.ToArray(), canvas);
             SaveAllSubData(canvas.connections.ToArray(), canvas);
             AssetDatabase.SaveAssets();
@@ -135,15 +194,49 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 return "";
             }
 
+            // If no canvas was initialized then skip destrcution
+            if (canvas != null)
+            {
+                //Destroy all temporary nodes
+                for (int n = canvas.nodes.Count - 1; n >= 0; n--)
+                {
+                    DestroyImmediate(canvas.nodes[n]);
+                    canvas.nodes.RemoveAt(n);
+                }
+
+                //Destroy all temporary connections
+                for (int c = canvas.connections.Count - 1; c >= 0; c--)
+                {
+                    DestroyImmediate(canvas.connections[c]);
+                    canvas.connections.RemoveAt(c);
+                }
+
+                //Destroy Start Node
+                DestroyImmediate(canvas.startNode);
+                canvas.startNode = null;
+
+                //Destroy the temporary canvas
+                DestroyImmediate(canvas);
+            }
+
             //Copy Canvas
             canvas = Object.Instantiate(loadedCanvas) as DialogCanvas;
 
             //Copy all Nodes
-            for (int n = 0; n < canvas.nodes.Count; n++)
+            for (int n = canvas.nodes.Count - 1; n >= 0 ; n--)
             {
+                if (canvas.nodes[n] == null)
+                {
+                    canvas.nodes.RemoveAt(n);
+                    continue;
+                }
                 canvas.nodes[n] = Object.Instantiate(loadedCanvas.nodes[n]) as Node;
                 canvas.nodes[n].name = loadedCanvas.nodes[n].name;
             }
+
+            //Copy Start Node
+            canvas.startNode = (Object.Instantiate(loadedCanvas.startNode) as StartNode);
+            canvas.startNode.name = loadedCanvas.startNode.name;
 
             //Copy all Connections
             for (int c = 0; c < canvas.connections.Count; c++)
@@ -157,9 +250,24 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             {
                 for (int subNodeID = 0; subNodeID < loadedCanvas.connections[c].froms.Count; subNodeID++)
                 {
-                    canvas.connections[c].froms[subNodeID] = canvas.nodes[loadedCanvas.nodes.IndexOf(loadedCanvas.connections[c].froms[subNodeID])];
+                    if (loadedCanvas.connections[c].froms[subNodeID] == loadedCanvas.startNode)
+                    {
+                        canvas.connections[c].froms[subNodeID] = canvas.startNode;
+                    }
+                    else
+                    {
+                        canvas.connections[c].froms[subNodeID] = canvas.nodes[loadedCanvas.nodes.IndexOf(loadedCanvas.connections[c].froms[subNodeID])];
+                    }
                 }
-                canvas.connections[c].to = canvas.nodes[loadedCanvas.nodes.IndexOf(loadedCanvas.connections[c].to)];
+
+                if (loadedCanvas.connections[c].to == loadedCanvas.startNode)
+                {
+                    canvas.connections[c].to = canvas.startNode;
+                }
+                else
+                {
+                    canvas.connections[c].to = canvas.nodes[loadedCanvas.nodes.IndexOf(loadedCanvas.connections[c].to)];
+                }
             }
 
             //Rebind Nodes to Connections
@@ -204,6 +312,10 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 savedCanvas.nodes[n].name = canvas.nodes[n].name;
             }
 
+            //Copy Start Node
+            savedCanvas.startNode = (Object.Instantiate(canvas.startNode) as StartNode);
+            savedCanvas.startNode.name = canvas.startNode.name;
+
             //Copy all Connections
             for (int c = 0; c < canvas.connections.Count; c++)
             {
@@ -216,9 +328,24 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             {
                 for (int subNodeID = 0; subNodeID < canvas.connections[c].froms.Count; subNodeID++)
                 {
-                    savedCanvas.connections[c].froms[subNodeID] = savedCanvas.nodes[canvas.nodes.IndexOf(canvas.connections[c].froms[subNodeID])];
+                    if (canvas.connections[c].froms[subNodeID] == canvas.startNode)
+                    {
+                        savedCanvas.connections[c].froms[subNodeID] = savedCanvas.startNode;
+                    }
+                    else
+                    {
+                        savedCanvas.connections[c].froms[subNodeID] = savedCanvas.nodes[canvas.nodes.IndexOf(canvas.connections[c].froms[subNodeID])];
+                    }
                 }
-                savedCanvas.connections[c].to = savedCanvas.nodes[canvas.nodes.IndexOf(canvas.connections[c].to)];
+
+                if (canvas.connections[c].to == canvas.startNode)
+                {
+                    savedCanvas.connections[c].to = savedCanvas.startNode;
+                }
+                else
+                {
+                    savedCanvas.connections[c].to = savedCanvas.nodes[canvas.nodes.IndexOf(canvas.connections[c].to)];
+                }
             }
 
             //Rebind Nodes to Connections

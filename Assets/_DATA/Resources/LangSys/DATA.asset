@@ -20,4 +20,4 @@ MonoBehaviour:
       flag: {fileID: 2800000, guid: 226398cf8baedaa4aab6b94742e06406, type: 3}
     - fullname: English
       flag: {fileID: 2800000, guid: 7f4a994af0c723d45b901c042b36d30d, type: 3}
-  mainLang: DE
+  mainLang: EN
