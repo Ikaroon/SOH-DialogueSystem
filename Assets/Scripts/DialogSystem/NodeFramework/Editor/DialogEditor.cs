@@ -37,6 +37,17 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
         //-----------------------------------------------------------------------------------------
 
+        #region Extra Features
+
+        //Feature Data for Switch Node
+        int switchNodeID = 0;
+
+        //Node lastNode = null;
+
+        #endregion
+
+        //-----------------------------------------------------------------------------------------
+
         #region Style Data
 
         private bool stylesLoaded = false;
@@ -54,6 +65,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
             InitializeToolbarStyles();
             InitializeSidebarStyles();
+            InitializeNodeFieldStyles();
             InitiateNodeStyles();
             InitiateHandleStyles();
 
@@ -99,7 +111,11 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                                 Load,                       // The System loads a canvas
                                 FinalizeLoad,               // The System finalizes the loading
                                 Save,                       // The System saves the canvas
-                                FinalizeSave                // The System finalizes the saving
+                                FinalizeSave,               // The System finalizes the saving
+
+                                MoveToCenter,
+                                MoveToSwitchNode,
+                                MoveToLastNode
 
                                 };
 
@@ -134,12 +150,16 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 current.type == eventType);
         }
 
-        private void RegisterTask(TaskType taskType, object taskObj)
+        private bool RegisterTask(TaskType taskType, object taskObj)
         {
             if (task == TaskType.None)
             {
                 task = taskType;
                 taskObject = taskObj;
+                return true;
+            } else
+            {
+                return false;
             }
         }
 
@@ -236,7 +256,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             InitializeStyleData();
 
             //Display Toolbar
-            DrawToolbar(new Rect(0f, 0f, this.position.width, 18f));
+            DrawToolbar(new Rect(0f, 0f, position.width, 18f));
 
             //-----------------------------------------------------------------------------------------
 
@@ -299,17 +319,41 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         //---------------------------------< NODEFIELD METHODS >---------------------------------\\ 
         //---------------------------------------------------------------------------------------\\
 
+        #region Style Data
+
+        private GUIStyle nodeFieldToolInactive, nodeFieldToolActive;
+
+        #endregion
+
+        #region Style Methods
+
+        private void InitializeNodeFieldStyles()
+        {
+            nodeFieldToolInactive = new GUIStyle(EditorStyles.miniButton);
+            nodeFieldToolInactive.onFocused = nodeFieldToolInactive.normal;
+            nodeFieldToolInactive.onActive = nodeFieldToolInactive.normal;
+
+            nodeFieldToolActive = new GUIStyle(EditorStyles.miniButton);
+            nodeFieldToolActive.normal = nodeFieldToolActive.onFocused;
+            nodeFieldToolActive.normal = nodeFieldToolActive.onActive;
+        }
+
+        #endregion
+
+        //-----------------------------------------------------------------------------------------
+
         #region Node Field Drawer
 
         private void DrawNodeField(Rect rect)
         {
             GUILayout.BeginArea(rect);
-            
+
+            ExtraFeatures();
+
             //Calculate Views
             Vector2 center = VectorMath.Round(rect.size / 2f);
             Rect displayRect = new Rect(Vector2.zero, center * 2f);
-
-
+            
             //Calculate the offset for the node placement
             Vector2 positionOffset = new Vector2(-1f + displayRect.width / 2f + nodeFieldScroll.x,
                                         1f + displayRect.height / 2f + nodeFieldScroll.y);
@@ -317,6 +361,8 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             DrawGrid(displayRect.size, positionOffset, 16f, new Color(0.1f, 0.1f, 0.1f, 0.2f), new Color(0f, 0.7f, 0f, 0.4f));
 
             DrawCanvas(displayRect, positionOffset);
+
+            ExtraFeaturesOverlay();
 
             GUILayout.EndArea();
         }
@@ -512,11 +558,14 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             if (MouseActionInRect(displayRect, EventType.mouseDown, MouseButton.Middle))// && mouseIsInside)
             {
                 GUI.BeginGroup(calculationRect);
-                RegisterTask(TaskType.MoveNodeField, Event.current.mousePosition);
+                bool taskGot = RegisterTask(TaskType.MoveNodeField, Event.current.mousePosition);
                 GUI.EndGroup();
 
-                OnResetTask = ResetNodeFieldEvents;
-                mouseActionUsed = true; //Disable all other mouse events from now on!
+                if (taskGot)
+                {
+                    OnResetTask = ResetNodeFieldEvents;
+                    mouseActionUsed = true; //Disable all other mouse events from now on!
+                }
             }
             else if (task == TaskType.MoveNodeField && MouseAction(EventType.MouseDrag, MouseButton.Middle))
             {
@@ -536,6 +585,65 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             {
                 task = TaskType.None;
                 mouseActionUsed = true; //Disable all other mouse events from now on!
+            }
+        }
+
+        #endregion
+
+        #region Node Field Extra Events
+
+        private void ExtraFeatures()
+        {
+            if (MouseActionInRect(new Rect(8f, 8f, 100f, 18f), EventType.mouseDown, MouseButton.Left))
+            {
+                if (RegisterTask(TaskType.MoveToCenter, Vector2.zero))
+                {
+                    OnResetTask = MoveToCenter;
+                    mouseActionUsed = true;
+                }
+            }
+
+            if (MouseActionInRect(new Rect(116f, 8f, 100f, 18f), EventType.mouseDown, MouseButton.Left))
+            {
+                if (RegisterTask(TaskType.MoveToSwitchNode, Vector2.zero))
+                {
+                    OnResetTask = MoveToSwitchNode;
+                    mouseActionUsed = true;
+                }
+            }
+        }
+
+        private void ExtraFeaturesOverlay()
+        {
+            //TODO: Pressed Animation
+
+            GUI.Box(new Rect(8f, 8f, 100f, 18f), new GUIContent("Go to Center"),
+                task == TaskType.MoveToCenter ? nodeFieldToolActive : nodeFieldToolInactive);
+
+            GUI.Box(new Rect(116f, 8f, 100f, 18f), new GUIContent("Switch Node"),
+                task == TaskType.MoveToSwitchNode ? nodeFieldToolActive : nodeFieldToolInactive);
+        }
+
+        private void MoveToSwitchNode()
+        {
+            if (task == TaskType.MoveToSwitchNode)
+            {
+                if (canvas && canvas.nodes.Count > 0f)
+                {
+                    switchNodeID = (switchNodeID + 1) % canvas.nodes.Count;
+                    nodeFieldScroll = -canvas.nodes[switchNodeID].position;
+                }
+                task = TaskType.None;
+            }
+        }
+
+        private void MoveToCenter()
+        {
+            if (task == TaskType.MoveToCenter)
+            {
+                nodeFieldScroll = Vector2.zero;
+                Repaint();
+                task = TaskType.None;
             }
         }
 
@@ -675,9 +783,11 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
         private void New()
         {
-            RegisterTask(TaskType.New, null);
-            OnResetTask = CompleteNew;
-            OnCompleteTask = FinalizeNew;
+            if (RegisterTask(TaskType.New, null))
+            {
+                OnResetTask = CompleteNew;
+                OnCompleteTask = FinalizeNew;
+            }
         }
 
         private void CompleteNew()
@@ -730,9 +840,11 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
         private void Load()
         {
-            RegisterTask(TaskType.Load, null);
-            OnResetTask = CompleteLoad;
-            OnCompleteTask = FinalizeLoad;
+            if (RegisterTask(TaskType.Load, null))
+            {
+                OnResetTask = CompleteLoad;
+                OnCompleteTask = FinalizeLoad;
+            }
         }
 
         private void CompleteLoad()
@@ -758,16 +870,20 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
         private void Save()
         {
-            RegisterTask(TaskType.Save, null);
-            OnResetTask = CompleteSave;
-            OnCompleteTask = FinalizeSave;
+            if (RegisterTask(TaskType.Save, null))
+            {
+                OnResetTask = CompleteSave;
+                OnCompleteTask = FinalizeSave;
+            }
         }
 
         private void SaveAs()
         {
-            RegisterTask(TaskType.Save, null);
-            OnResetTask = CompleteSave;
-            OnCompleteTask = FinalizeSave;
+            if (RegisterTask(TaskType.Save, null))
+            {
+                OnResetTask = CompleteSave;
+                OnCompleteTask = FinalizeSave;
+            }
         }
 
         private void CompleteSave()
@@ -896,7 +1012,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         //---------------------------------------------------------------------------------------\\
         //----------------------------------< SIDEBAR METHODS >----------------------------------\\ 
         //---------------------------------------------------------------------------------------\\
-        
+
         #region Style Data
 
         private GUIStyle groupBoxStyle;
@@ -962,9 +1078,11 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             //Resize Events
             if (MouseActionInRect(resizeRect, EventType.MouseDown, MouseButton.Left))
             {
-                RegisterTask(TaskType.ResizeSidebar, (float)(Event.current.mousePosition.x - sidebarWidth));
-                OnResetTask = ResetToolbarEvents;
-                mouseActionUsed = true; //Disable all other mouse events from now on!
+                if (RegisterTask(TaskType.ResizeSidebar, (float)(Event.current.mousePosition.x - sidebarWidth)))
+                {
+                    OnResetTask = ResetToolbarEvents;
+                    mouseActionUsed = true; //Disable all other mouse events from now on!
+                }
             }
             else if (task == TaskType.ResizeSidebar && MouseAction(EventType.MouseDrag, MouseButton.Left))
             {
@@ -1233,9 +1351,11 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 NodeEventPackage eventPackage = new NodeEventPackage();
                 eventPackage.node = node;
                 eventPackage.anchor = Event.current.mousePosition;
-                RegisterTask(TaskType.MoveNode, eventPackage);
-                OnResetTask = ResetNodeMoveEvent;
-                mouseActionUsed = true; //Disable all other mouse events from now on!
+                if (RegisterTask(TaskType.MoveNode, eventPackage))
+                {
+                    OnResetTask = ResetNodeMoveEvent;
+                    mouseActionUsed = true; //Disable all other mouse events from now on!
+                }
             }
             else if ((task == TaskType.MoveNode || task == TaskType.MovingNode) && MouseAction(EventType.mouseDrag, MouseButton.Left) && ((NodeEventPackage)taskObject).node == node)
             {
@@ -1282,26 +1402,34 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 eventPackage.data = attribute;
                 if (upperLeft.Contains(Event.current.mousePosition)) //Resize Upper Left
                 {
-                    RegisterTask(TaskType.ResizeNodeUpperLeft, eventPackage);
-                    OnResetTask = ResetNodeResizeTask;
-                    mouseActionUsed = true;
+                    if (RegisterTask(TaskType.ResizeNodeUpperLeft, eventPackage))
+                    {
+                        OnResetTask = ResetNodeResizeTask;
+                        mouseActionUsed = true;
+                    }
                 }
                 else if (upperRight.Contains(Event.current.mousePosition)) //Resize Upper Right
                 {
-                    RegisterTask(TaskType.ResizeNodeUpperRight, eventPackage);
-                    OnResetTask = ResetNodeResizeTask;
-                    mouseActionUsed = true;
+                    if (RegisterTask(TaskType.ResizeNodeUpperRight, eventPackage))
+                    {
+                        OnResetTask = ResetNodeResizeTask;
+                        mouseActionUsed = true;
+                    }
                 }
                 else if(bottomRight.Contains(Event.current.mousePosition)) //Resize Bottom Right
                 {
-                    RegisterTask(TaskType.ResizeNodeBottomRight, eventPackage);
-                    OnResetTask = ResetNodeResizeTask;
-                    mouseActionUsed = true;
+                    if (RegisterTask(TaskType.ResizeNodeBottomRight, eventPackage))
+                    {
+                        OnResetTask = ResetNodeResizeTask;
+                        mouseActionUsed = true;
+                    }
                 } else if (bottomLeft.Contains(Event.current.mousePosition)) //Resize Bottom Left
                 {
-                    RegisterTask(TaskType.ResizeNodeBottomLeft, eventPackage);
-                    OnResetTask = ResetNodeResizeTask;
-                    mouseActionUsed = true;
+                    if (RegisterTask(TaskType.ResizeNodeBottomLeft, eventPackage))
+                    {
+                        OnResetTask = ResetNodeResizeTask;
+                        mouseActionUsed = true;
+                    }
                 }
             } else if (MouseAction(EventType.mouseDrag, MouseButton.Left))
             {
@@ -1441,27 +1569,35 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 eventPackage.data = attribute;
                 if (up.Contains(Event.current.mousePosition)) //Resize Up
                 {
-                    RegisterTask(TaskType.ResizeNodeUp, eventPackage);
-                    OnResetTask = ResetNodeResizeTask;
-                    mouseActionUsed = true;
+                    if (RegisterTask(TaskType.ResizeNodeUp, eventPackage))
+                    {
+                        OnResetTask = ResetNodeResizeTask;
+                        mouseActionUsed = true;
+                    }
                 }
                 else if (right.Contains(Event.current.mousePosition)) //Resize Right
                 {
-                    RegisterTask(TaskType.ResizeNodeRight, eventPackage);
-                    OnResetTask = ResetNodeResizeTask;
-                    mouseActionUsed = true;
+                    if (RegisterTask(TaskType.ResizeNodeRight, eventPackage))
+                    {
+                        OnResetTask = ResetNodeResizeTask;
+                        mouseActionUsed = true;
+                    }
                 }
                 else if (bottom.Contains(Event.current.mousePosition)) //Resize Bottom
                 {
-                    RegisterTask(TaskType.ResizeNodeBottom, eventPackage);
-                    OnResetTask = ResetNodeResizeTask;
-                    mouseActionUsed = true;
+                    if (RegisterTask(TaskType.ResizeNodeBottom, eventPackage))
+                    {
+                        OnResetTask = ResetNodeResizeTask;
+                        mouseActionUsed = true;
+                    }
                 }
                 else if (left.Contains(Event.current.mousePosition)) //Resize Left
                 {
-                    RegisterTask(TaskType.ResizeNodeLeft, eventPackage);
-                    OnResetTask = ResetNodeResizeTask;
-                    mouseActionUsed = true;
+                    if (RegisterTask(TaskType.ResizeNodeLeft, eventPackage))
+                    {
+                        OnResetTask = ResetNodeResizeTask;
+                        mouseActionUsed = true;
+                    }
                 }
             }
             else if (MouseAction(EventType.mouseDrag, MouseButton.Left))
@@ -1749,22 +1885,26 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 eventPackage.attribute = attribute;
                 eventPackage.info = info;
 
+                bool taskReceived = false;
+
                 switch (attribute.handleType)
                 {
                     case ConnectionType.Input:
                         {
-                            RegisterTask(TaskType.ConnectAnInput, eventPackage);
+                            taskReceived = RegisterTask(TaskType.ConnectAnInput, eventPackage);
                         }
                         break;
                     case ConnectionType.Output:
                         {
-                            RegisterTask(TaskType.ConnectAnOutput, eventPackage);
+                            taskReceived = RegisterTask(TaskType.ConnectAnOutput, eventPackage);
                         }
                         break;
                 }
 
-                OnResetTask = ResetHandleConnect;
-                mouseActionUsed = true; //Disable all other mouse events from now on!
+                if (taskReceived) {
+                    OnResetTask = ResetHandleConnect;
+                    mouseActionUsed = true; //Disable all other mouse events from now on!
+                }
             }
             else if (inputPackage.eventType == EventType.mouseUp && inputPackage.mouseButton == MouseButton.Left)
             {
@@ -1783,8 +1923,10 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                             changePack.attribute = attribute;
                             changePack.info = info;
 
-                            RegisterTask(TaskType.CreateConnectionInput, changePack);
-                            OnResetTask = ApplyConnectInput;
+                            if (RegisterTask(TaskType.CreateConnectionInput, changePack))
+                            {
+                                OnResetTask = ApplyConnectInput;
+                            }
                         }
                         break;
                     case TaskType.ConnectAnOutput:
@@ -1800,8 +1942,10 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                             changePack.attribute = attribute;
                             changePack.info = info;
 
-                            RegisterTask(TaskType.CreateConnectionOutput, changePack);
-                            OnResetTask = ApplyConnectOutput;
+                            if (RegisterTask(TaskType.CreateConnectionOutput, changePack))
+                            {
+                                OnResetTask = ApplyConnectOutput;
+                            }
                         }
                         break;
                 }
@@ -1972,8 +2116,10 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         private void DeleteOneConnection(object obj)
         {
             ConnectionIDPackage idPackage = (ConnectionIDPackage)obj;
-            RegisterTask(TaskType.DeleteConnection, idPackage);
-            OnResetTask = CompleteDeleteOneConnection;
+            if (RegisterTask(TaskType.DeleteConnection, idPackage))
+            {
+                OnResetTask = CompleteDeleteOneConnection;
+            }
         }
 
         private void CompleteDeleteOneConnection()
