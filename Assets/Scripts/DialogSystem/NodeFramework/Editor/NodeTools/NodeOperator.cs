@@ -9,6 +9,8 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 {
     public static class NodeOperator
     {
+        private static Dictionary<System.Type, NodeHandlePackage[]> nodeHandleCache = new Dictionary<Type, NodeHandlePackage[]>();
+
         /// <summary>
         /// Collects all NodeHandles in the given node
         /// </summary>
@@ -17,7 +19,13 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         /// <returns>A List of all collected NodeHandlePackes</returns>
         public static List<NodeHandlePackage> GetConnections(Node node, ConnectionType type)
         {
+            if (nodeHandleCache.ContainsKey(node.GetType()))
+            {
+                return GetCachedConnections(node, type);
+            }
+
             List<NodeHandlePackage> fields = new List<NodeHandlePackage>();
+            List<NodeHandlePackage> cachableFields = new List<NodeHandlePackage>();
 
             FieldInfo[] connectionFields = node.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
 
@@ -25,12 +33,35 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             {
                 NodeHandleAttribute attribute = Attribute.GetCustomAttribute(connectionFields[i], typeof(NodeHandleAttribute)) as NodeHandleAttribute;
 
-                if (attribute != null && attribute.handleType == type)
+                if (connectionFields[i].FieldType == typeof(NodeConnection))
                 {
-                    if (connectionFields[i].FieldType == typeof(NodeConnection))
-                    {
-                        fields.Add(new NodeHandlePackage(attribute, connectionFields[i]));
+                    if (attribute != null) {
+                        NodeHandlePackage package = new NodeHandlePackage(attribute, connectionFields[i]);
+
+                        if (attribute.handleType == type)
+                        {
+                            fields.Add(package);
+                        }
+
+                        cachableFields.Add(package);
                     }
+                }
+            }
+
+            nodeHandleCache.Add(node.GetType(), cachableFields.ToArray());
+
+            return fields;
+        }
+
+        private static List<NodeHandlePackage> GetCachedConnections(Node node, ConnectionType type)
+        {
+            List<NodeHandlePackage> fields = new List<NodeHandlePackage>();
+
+            foreach (NodeHandlePackage attribute in nodeHandleCache[node.GetType()])
+            {
+                if (attribute != null && attribute.handle.handleType == type)
+                {
+                    fields.Add(attribute);
                 }
             }
 
