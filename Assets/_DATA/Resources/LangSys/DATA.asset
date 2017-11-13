@@ -15,9 +15,12 @@ MonoBehaviour:
     keys:
     - DE
     - EN
+    - FR
     values:
     - fullname: German
       flag: {fileID: 2800000, guid: 226398cf8baedaa4aab6b94742e06406, type: 3}
     - fullname: English
       flag: {fileID: 2800000, guid: 7f4a994af0c723d45b901c042b36d30d, type: 3}
+    - fullname: French
+      flag: {fileID: 2800000, guid: 2f5626bb69023064f9f10674a33de7b5, type: 3}
   mainLang: DE

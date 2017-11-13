@@ -81,7 +81,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
         #endregion
 
-        #endif
+#endif
 
         //--------------------------------\\
         //-----------< PLAYER >-----------\\
@@ -89,23 +89,33 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
         #region Node Data
 
+        public virtual bool IsAuto()
+        {
+            return false;
+        }
+
         #endregion
 
         #region Node Methods
 
         public virtual Node PrepareNode()
         {
-            return null;
+            return this;
         }
 
         public virtual Node UpdateNode()
         {
-            return null;
+            return this;
         }
 
         public virtual Node LateUpdateNode()
         {
-            return null;
+            return this;
+        }
+
+        public virtual void DisplayNode(Rect rect)
+        {
+
         }
 
         #endregion

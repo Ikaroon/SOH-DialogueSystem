@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad58ac1825ac5c46a09ac30d742bf2c, type: 3}
   m_Name: Char_MaxMustermann
   m_EditorClassIdentifier: 
-  timestamp: 2017/11/13 | 11:48
+  timestamp: 2017/11/13 | 18:14
   profile: {fileID: 2800000, guid: 2643145fd67473b4cafd942967b7c068, type: 3}
   forename: Max
   surname: Mustermann
@@ -19,7 +19,7 @@ MonoBehaviour:
   gender: 0
   trustStability: 0.5
   heartModifier: 1
-  textColor: {r: 1, g: 1, b: 1, a: 1}
+  textColor: {r: 0.51318455, g: 0.8088235, b: 0.17841694, a: 1}
   playerPrefab: {fileID: 0}
   infoSheet: {fileID: 0}
   storySheets: []

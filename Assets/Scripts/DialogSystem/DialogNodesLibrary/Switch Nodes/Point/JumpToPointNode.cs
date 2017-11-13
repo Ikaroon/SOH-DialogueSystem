@@ -11,9 +11,30 @@ namespace SpyOnHuman.DialogSystem
         [NodeHandle(0, ConnectionType.Input, 0f)]
         public NodeConnection input;
 
-        [NodeHandle(0, ConnectionType.Output, 0f, true, "When the point ends with null then it will continue from here.")]
-        public NodeConnection output;
-
         public string pointKey = "";
+
+        public override bool IsAuto()
+        {
+            return true;
+        }
+
+        public override Node PrepareNode()
+        {
+            if (DialogInterpreter.current.interpretedDialog.definedPoints.ContainsKey(pointKey))
+            {
+                return DialogInterpreter.current.interpretedDialog.definedPoints[pointKey].PrepareNode();
+            }
+            return null;
+        }
+
+        public override Node UpdateNode()
+        {
+            return null;
+        }
+
+        public override Node LateUpdateNode()
+        {
+            return null;
+        }
     }
 }

@@ -21,5 +21,19 @@ namespace SpyOnHuman.DialogSystem
                 canvas.definedPoints.Remove(pointKey);
             }
         }
+
+        public override bool IsAuto()
+        {
+            return true;
+        }
+
+        public override Node PrepareNode()
+        {
+            if (output)
+            {
+                return output.to.PrepareNode();
+            }
+            return null;
+        }
     }
 }

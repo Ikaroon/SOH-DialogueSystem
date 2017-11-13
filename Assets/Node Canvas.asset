@@ -12,16 +12,21 @@ MonoBehaviour:
   m_Name: Node Canvas
   m_EditorClassIdentifier: 
   canvasDescription: 
-  canvasTimestamp: '2017 / 11 / 11 - 22:37: 10'
+  canvasTimestamp: '2017 / 11 / 13 - 18:38: 39'
   canvasName: 
   nodes:
-  - {fileID: 114081340144745570}
-  - {fileID: 114198347497081660}
-  startNode: {fileID: 114435386000091168}
+  - {fileID: 114162082861396228}
+  - {fileID: 114735316314826632}
+  - {fileID: 114905932124686086}
+  startNode: {fileID: 114204329444824478}
   connections:
-  - {fileID: 114330073196996572}
-  - {fileID: 114269572788637422}
---- !u!114 &114081340144745570
+  - {fileID: 114230070203227324}
+  - {fileID: 114537918347101438}
+  - {fileID: 114913526232293658}
+  definedPoints:
+    keys: []
+    values: []
+--- !u!114 &114162082861396228
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -34,8 +39,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 272, y: 48}
   size: {x: 256, y: 160}
-  input: {fileID: 114330073196996572}
-  output: {fileID: 114269572788637422}
+  input: {fileID: 114230070203227324}
+  output: {fileID: 114537918347101438}
   speaker: {fileID: 0}
   text:
     langTexts:
@@ -51,9 +56,63 @@ MonoBehaviour:
       - DE
       - EN
       values:
-      - {fileID: 8300000, guid: afbce45cc59fea34eb93f43c9ae6c304, type: 3}
       - {fileID: 0}
---- !u!114 &114198347497081660
+      - {fileID: 0}
+--- !u!114 &114204329444824478
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d6e1d97c1393a549af60030ede3b190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 0, y: 0}
+  size: {x: 128, y: 64}
+  output: {fileID: 114230070203227324}
+--- !u!114 &114230070203227324
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fromAttributes:
+  - ID: 0
+    position: {x: 0, y: 32}
+  toAttribute:
+    ID: 0
+    position: {x: 0, y: 32}
+  froms:
+  - {fileID: 114204329444824478}
+  to: {fileID: 114162082861396228}
+--- !u!114 &114537918347101438
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fromAttributes:
+  - ID: 0
+    position: {x: 0, y: 32}
+  toAttribute:
+    ID: 0
+    position: {x: 0, y: 32}
+  froms:
+  - {fileID: 114162082861396228}
+  to: {fileID: 114735316314826632}
+--- !u!114 &114735316314826632
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -66,8 +125,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 608, y: 48}
   size: {x: 256, y: 160}
-  input: {fileID: 114269572788637422}
-  output: {fileID: 0}
+  input: {fileID: 114537918347101438}
+  output: {fileID: 114913526232293658}
   speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
   text:
     langTexts:
@@ -84,8 +143,24 @@ MonoBehaviour:
       - EN
       values:
       - {fileID: 0}
-      - {fileID: 8300000, guid: afbce45cc59fea34eb93f43c9ae6c304, type: 3}
---- !u!114 &114269572788637422
+      - {fileID: 0}
+--- !u!114 &114905932124686086
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a526c224212924c4fa575ebe744011ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 872, y: 0}
+  size: {x: 144, y: 64}
+  input: {fileID: 114913526232293658}
+  output: {fileID: 0}
+  dialog: {fileID: 11400000, guid: 72d564d18785cd1419e666fc61811814, type: 2}
+--- !u!114 &114913526232293658
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -103,39 +178,5 @@ MonoBehaviour:
     ID: 0
     position: {x: 0, y: 32}
   froms:
-  - {fileID: 114081340144745570}
-  to: {fileID: 114198347497081660}
---- !u!114 &114330073196996572
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fromAttributes:
-  - ID: 0
-    position: {x: 0, y: 32}
-  toAttribute:
-    ID: 0
-    position: {x: 0, y: 32}
-  froms:
-  - {fileID: 114435386000091168}
-  to: {fileID: 114081340144745570}
---- !u!114 &114435386000091168
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d6e1d97c1393a549af60030ede3b190, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position: {x: 0, y: 0}
-  size: {x: 128, y: 64}
-  output: {fileID: 114330073196996572}
+  - {fileID: 114735316314826632}
+  to: {fileID: 114905932124686086}

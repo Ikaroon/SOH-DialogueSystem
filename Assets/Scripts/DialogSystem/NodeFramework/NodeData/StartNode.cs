@@ -9,5 +9,10 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
     {
         [NodeHandle(0, ConnectionType.Output, y: 0f)]
         public NodeConnection output;
+
+        public override Node PrepareNode()
+        {
+            return output.to.PrepareNode();
+        }
     }
 }

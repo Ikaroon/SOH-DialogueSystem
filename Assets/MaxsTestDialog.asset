@@ -12,40 +12,83 @@ MonoBehaviour:
   m_Name: MaxsTestDialog
   m_EditorClassIdentifier: 
   canvasDescription: The first bigger test dialog
-  canvasTimestamp: '2017 / 11 / 13 - 12:50: 41'
+  canvasTimestamp: '2017 / 11 / 13 - 18:41: 49'
   canvasName: Maxs Dialog
   nodes:
-  - {fileID: 114876679290922924}
-  - {fileID: 114460206801401268}
-  - {fileID: 114876798311835154}
-  - {fileID: 114057842724587590}
-  - {fileID: 114558373127702740}
-  - {fileID: 114752550135627718}
-  - {fileID: 114863356023788634}
-  - {fileID: 114658792567158056}
-  - {fileID: 114925537074350130}
-  - {fileID: 114155652626333846}
-  - {fileID: 114224382644280432}
-  - {fileID: 114854926846395696}
-  - {fileID: 114773611669266994}
-  - {fileID: 114065108211314302}
-  startNode: {fileID: 114552024625704522}
+  - {fileID: 114792358247577492}
+  - {fileID: 114535054315021652}
+  - {fileID: 114519595468484268}
+  - {fileID: 114256774933233748}
+  - {fileID: 114358055496513426}
+  - {fileID: 114871240772659982}
+  - {fileID: 114674833317790620}
+  - {fileID: 114615590929103384}
+  - {fileID: 114347825699149160}
+  - {fileID: 114340745500975342}
+  - {fileID: 114125529819234764}
+  - {fileID: 114401845861164424}
+  - {fileID: 114202750502896590}
+  - {fileID: 114683649682119156}
+  startNode: {fileID: 114668284355624652}
   connections:
-  - {fileID: 114481689306678724}
-  - {fileID: 114782598320963028}
-  - {fileID: 114559099974179794}
-  - {fileID: 114826373096114180}
-  - {fileID: 114992154598841466}
-  - {fileID: 114359847456018976}
-  - {fileID: 114386171345931486}
-  - {fileID: 114534978762337424}
-  - {fileID: 114743583711984698}
-  - {fileID: 114486535057825704}
-  - {fileID: 114046215682247818}
-  - {fileID: 114859120406829386}
-  - {fileID: 114203894538293588}
-  - {fileID: 114611361249014066}
---- !u!114 &114046215682247818
+  - {fileID: 114061894219115324}
+  - {fileID: 114933426825202506}
+  - {fileID: 114696461573366892}
+  - {fileID: 114722659595005850}
+  - {fileID: 114304266211143924}
+  - {fileID: 114117271774600872}
+  - {fileID: 114769105287645246}
+  - {fileID: 114326240952154212}
+  - {fileID: 114431926062093398}
+  - {fileID: 114878289014194866}
+  - {fileID: 114467819950813376}
+  - {fileID: 114379691875111508}
+  - {fileID: 114110394430114986}
+  - {fileID: 114108327646303250}
+  definedPoints:
+    keys: []
+    values: []
+--- !u!114 &114061894219115324
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fromAttributes:
+  - ID: 0
+    position: {x: 0, y: 32}
+  toAttribute:
+    ID: 0
+    position: {x: 0, y: 32}
+  froms:
+  - {fileID: 114668284355624652}
+  to: {fileID: 114792358247577492}
+--- !u!114 &114108327646303250
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fromAttributes:
+  - ID: 1
+    position: {x: 0, y: 144}
+  toAttribute:
+    ID: 0
+    position: {x: 0, y: 32}
+  froms:
+  - {fileID: 114792358247577492}
+  to: {fileID: 114519595468484268}
+--- !u!114 &114110394430114986
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -63,105 +106,9 @@ MonoBehaviour:
     ID: 0
     position: {x: 0, y: 32}
   froms:
-  - {fileID: 114658792567158056}
-  to: {fileID: 114065108211314302}
---- !u!114 &114057842724587590
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position: {x: 576, y: -288}
-  size: {x: 288, y: 160}
-  input: {fileID: 114559099974179794}
-  output: {fileID: 114386171345931486}
-  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
-  text:
-    langTexts:
-      keys:
-      - DE
-      - EN
-      values:
-      - 
-      - Hey, I'm fine thanks. How about you?
-  audio:
-    langAudios:
-      keys:
-      - DE
-      - EN
-      values:
-      - {fileID: 0}
-      - {fileID: 0}
---- !u!114 &114065108211314302
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position: {x: 1200, y: -592}
-  size: {x: 256, y: 160}
-  input: {fileID: 114046215682247818}
-  output: {fileID: 0}
-  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
-  text:
-    langTexts:
-      keys:
-      - DE
-      - EN
-      values:
-      - 
-      - Well that's good. See you!
-  audio:
-    langAudios:
-      keys:
-      - DE
-      - EN
-      values:
-      - {fileID: 0}
-      - {fileID: 0}
---- !u!114 &114155652626333846
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position: {x: 1200, y: 48}
-  size: {x: 256, y: 160}
-  input: {fileID: 114859120406829386}
-  output: {fileID: 0}
-  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
-  text:
-    langTexts:
-      keys:
-      - DE
-      - EN
-      values:
-      - 
-      - I'm working. So should you!
-  audio:
-    langAudios:
-      keys:
-      - DE
-      - EN
-      values:
-      - {fileID: 0}
-      - {fileID: 0}
---- !u!114 &114203894538293588
+  - {fileID: 114674833317790620}
+  to: {fileID: 114125529819234764}
+--- !u!114 &114117271774600872
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -174,14 +121,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fromAttributes:
   - ID: 0
-    position: {x: 0, y: 64}
+    position: {x: 0, y: 32}
   toAttribute:
     ID: 0
     position: {x: 0, y: 32}
   froms:
-  - {fileID: 114863356023788634}
-  to: {fileID: 114224382644280432}
---- !u!114 &114224382644280432
+  - {fileID: 114519595468484268}
+  to: {fileID: 114674833317790620}
+--- !u!114 &114125529819234764
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -194,7 +141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 1200, y: -112}
   size: {x: 256, y: 160}
-  input: {fileID: 114203894538293588}
+  input: {fileID: 114110394430114986}
   output: {fileID: 0}
   speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
   text:
@@ -213,47 +160,7 @@ MonoBehaviour:
       values:
       - {fileID: 0}
       - {fileID: 0}
---- !u!114 &114359847456018976
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fromAttributes:
-  - ID: 0
-    position: {x: 0, y: 32}
-  toAttribute:
-    ID: 0
-    position: {x: 0, y: 32}
-  froms:
-  - {fileID: 114876798311835154}
-  to: {fileID: 114863356023788634}
---- !u!114 &114386171345931486
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fromAttributes:
-  - ID: 0
-    position: {x: 0, y: 32}
-  toAttribute:
-    ID: 0
-    position: {x: 0, y: 32}
-  froms:
-  - {fileID: 114057842724587590}
-  to: {fileID: 114658792567158056}
---- !u!114 &114460206801401268
+--- !u!114 &114202750502896590
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -264,10 +171,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: 576, y: 368}
-  size: {x: 288, y: 160}
-  input: {fileID: 114782598320963028}
-  output: {fileID: 114826373096114180}
+  position: {x: 1200, y: -432}
+  size: {x: 256, y: 160}
+  input: {fileID: 114878289014194866}
+  output: {fileID: 0}
   speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
   text:
     langTexts:
@@ -276,7 +183,7 @@ MonoBehaviour:
       - EN
       values:
       - 
-      - Wait a second.... <w:2>It is <var:time>!
+      - Oh no, what's up?
   audio:
     langAudios:
       keys:
@@ -285,7 +192,39 @@ MonoBehaviour:
       values:
       - {fileID: 0}
       - {fileID: 0}
---- !u!114 &114481689306678724
+--- !u!114 &114256774933233748
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 576, y: -288}
+  size: {x: 288, y: 160}
+  input: {fileID: 114696461573366892}
+  output: {fileID: 114769105287645246}
+  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
+  text:
+    langTexts:
+      keys:
+      - DE
+      - EN
+      values:
+      - 
+      - Hey, I'm fine thanks. How about you?
+  audio:
+    langAudios:
+      keys:
+      - DE
+      - EN
+      values:
+      - {fileID: 0}
+      - {fileID: 0}
+--- !u!114 &114304266211143924
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -303,29 +242,9 @@ MonoBehaviour:
     ID: 0
     position: {x: 0, y: 32}
   froms:
-  - {fileID: 114552024625704522}
-  to: {fileID: 114876679290922924}
---- !u!114 &114486535057825704
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fromAttributes:
-  - ID: 1
-    position: {x: 0, y: 128}
-  toAttribute:
-    ID: 0
-    position: {x: 0, y: 32}
-  froms:
-  - {fileID: 114658792567158056}
-  to: {fileID: 114773611669266994}
---- !u!114 &114534978762337424
+  - {fileID: 114358055496513426}
+  to: {fileID: 114871240772659982}
+--- !u!114 &114326240952154212
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -343,9 +262,9 @@ MonoBehaviour:
     ID: 0
     position: {x: 0, y: 32}
   froms:
-  - {fileID: 114863356023788634}
-  to: {fileID: 114925537074350130}
---- !u!114 &114552024625704522
+  - {fileID: 114674833317790620}
+  to: {fileID: 114347825699149160}
+--- !u!114 &114340745500975342
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -353,13 +272,63 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d6e1d97c1393a549af60030ede3b190, type: 3}
+  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: 0, y: 0}
-  size: {x: 128, y: 64}
-  output: {fileID: 114481689306678724}
---- !u!114 &114558373127702740
+  position: {x: 1200, y: 48}
+  size: {x: 256, y: 160}
+  input: {fileID: 114379691875111508}
+  output: {fileID: 0}
+  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
+  text:
+    langTexts:
+      keys:
+      - DE
+      - EN
+      values:
+      - 
+      - I'm working. So should you!
+  audio:
+    langAudios:
+      keys:
+      - DE
+      - EN
+      values:
+      - {fileID: 0}
+      - {fileID: 0}
+--- !u!114 &114347825699149160
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 1200, y: 208}
+  size: {x: 256, y: 160}
+  input: {fileID: 114326240952154212}
+  output: {fileID: 0}
+  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
+  text:
+    langTexts:
+      keys:
+      - DE
+      - EN
+      values:
+      - 
+      - That would be... <w:2>interesting!
+  audio:
+    langAudios:
+      keys:
+      - DE
+      - EN
+      values:
+      - {fileID: 0}
+      - {fileID: 0}
+--- !u!114 &114358055496513426
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -372,8 +341,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 896, y: 368}
   size: {x: 256, y: 160}
-  input: {fileID: 114826373096114180}
-  output: {fileID: 114992154598841466}
+  input: {fileID: 114722659595005850}
+  output: {fileID: 114304266211143924}
   speaker: {fileID: 0}
   text:
     langTexts:
@@ -391,27 +360,7 @@ MonoBehaviour:
       values:
       - {fileID: 0}
       - {fileID: 0}
---- !u!114 &114559099974179794
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fromAttributes:
-  - ID: 0
-    position: {x: 0, y: 64}
-  toAttribute:
-    ID: 0
-    position: {x: 0, y: 32}
-  froms:
-  - {fileID: 114876679290922924}
-  to: {fileID: 114057842724587590}
---- !u!114 &114611361249014066
+--- !u!114 &114379691875111508
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -429,9 +378,145 @@ MonoBehaviour:
     ID: 0
     position: {x: 0, y: 32}
   froms:
-  - {fileID: 114876679290922924}
-  to: {fileID: 114876798311835154}
---- !u!114 &114658792567158056
+  - {fileID: 114674833317790620}
+  to: {fileID: 114340745500975342}
+--- !u!114 &114401845861164424
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 1200, y: -272}
+  size: {x: 256, y: 160}
+  input: {fileID: 114431926062093398}
+  output: {fileID: 0}
+  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
+  text:
+    langTexts:
+      keys:
+      - DE
+      - EN
+      values:
+      - 
+      - What? What's the matter?
+  audio:
+    langAudios:
+      keys:
+      - DE
+      - EN
+      values:
+      - {fileID: 0}
+      - {fileID: 0}
+--- !u!114 &114431926062093398
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fromAttributes:
+  - ID: 2
+    position: {x: 0, y: 208}
+  toAttribute:
+    ID: 0
+    position: {x: 0, y: 32}
+  froms:
+  - {fileID: 114615590929103384}
+  to: {fileID: 114401845861164424}
+--- !u!114 &114467819950813376
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fromAttributes:
+  - ID: 0
+    position: {x: 0, y: 64}
+  toAttribute:
+    ID: 0
+    position: {x: 0, y: 32}
+  froms:
+  - {fileID: 114615590929103384}
+  to: {fileID: 114683649682119156}
+--- !u!114 &114519595468484268
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 560, y: -16}
+  size: {x: 256, y: 160}
+  input: {fileID: 114108327646303250}
+  output: {fileID: 114117271774600872}
+  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
+  text:
+    langTexts:
+      keys:
+      - DE
+      - EN
+      values:
+      - 
+      - The cat does cat things. What else?
+  audio:
+    langAudios:
+      keys:
+      - DE
+      - EN
+      values:
+      - {fileID: 0}
+      - {fileID: 0}
+--- !u!114 &114535054315021652
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 576, y: 368}
+  size: {x: 288, y: 160}
+  input: {fileID: 114933426825202506}
+  output: {fileID: 114722659595005850}
+  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
+  text:
+    langTexts:
+      keys:
+      - DE
+      - EN
+      values:
+      - 
+      - Wait a second.... <w:2>It is <var:time>!
+  audio:
+    langAudios:
+      keys:
+      - DE
+      - EN
+      values:
+      - {fileID: 0}
+      - {fileID: 0}
+--- !u!114 &114615590929103384
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -444,10 +529,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 896, y: -480}
   size: {x: 256, y: 256}
-  input: {fileID: 114386171345931486}
-  decisionA: {fileID: 114046215682247818}
-  decisionB: {fileID: 114486535057825704}
-  decisionC: {fileID: 114743583711984698}
+  input: {fileID: 114769105287645246}
+  decisionA: {fileID: 114467819950813376}
+  decisionB: {fileID: 114878289014194866}
+  decisionC: {fileID: 114431926062093398}
   decisionAText:
     langTexts:
       keys:
@@ -496,7 +581,7 @@ MonoBehaviour:
       values:
       - {fileID: 0}
       - {fileID: 0}
---- !u!114 &114743583711984698
+--- !u!114 &114668284355624652
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -504,175 +589,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d6e1d97c1393a549af60030ede3b190, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fromAttributes:
-  - ID: 2
-    position: {x: 0, y: 208}
-  toAttribute:
-    ID: 0
-    position: {x: 0, y: 32}
-  froms:
-  - {fileID: 114658792567158056}
-  to: {fileID: 114854926846395696}
---- !u!114 &114752550135627718
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position: {x: 1200, y: 368}
-  size: {x: 256, y: 160}
-  input: {fileID: 114992154598841466}
-  output: {fileID: 0}
-  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
-  text:
-    langTexts:
-      keys:
-      - DE
-      - EN
-      values:
-      - 
-      - You're welcome!
-  audio:
-    langAudios:
-      keys:
-      - DE
-      - EN
-      values:
-      - {fileID: 0}
-      - {fileID: 0}
---- !u!114 &114773611669266994
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position: {x: 1200, y: -432}
-  size: {x: 256, y: 160}
-  input: {fileID: 114486535057825704}
-  output: {fileID: 0}
-  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
-  text:
-    langTexts:
-      keys:
-      - DE
-      - EN
-      values:
-      - 
-      - Oh no, what's up?
-  audio:
-    langAudios:
-      keys:
-      - DE
-      - EN
-      values:
-      - {fileID: 0}
-      - {fileID: 0}
---- !u!114 &114782598320963028
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fromAttributes:
-  - ID: 2
-    position: {x: 0, y: 224}
-  toAttribute:
-    ID: 0
-    position: {x: 0, y: 32}
-  froms:
-  - {fileID: 114876679290922924}
-  to: {fileID: 114460206801401268}
---- !u!114 &114826373096114180
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fromAttributes:
-  - ID: 0
-    position: {x: 0, y: 32}
-  toAttribute:
-    ID: 0
-    position: {x: 0, y: 32}
-  froms:
-  - {fileID: 114460206801401268}
-  to: {fileID: 114558373127702740}
---- !u!114 &114854926846395696
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position: {x: 1200, y: -272}
-  size: {x: 256, y: 160}
-  input: {fileID: 114743583711984698}
-  output: {fileID: 0}
-  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
-  text:
-    langTexts:
-      keys:
-      - DE
-      - EN
-      values:
-      - 
-      - What? What's the matter?
-  audio:
-    langAudios:
-      keys:
-      - DE
-      - EN
-      values:
-      - {fileID: 0}
-      - {fileID: 0}
---- !u!114 &114859120406829386
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fromAttributes:
-  - ID: 1
-    position: {x: 0, y: 144}
-  toAttribute:
-    ID: 0
-    position: {x: 0, y: 32}
-  froms:
-  - {fileID: 114863356023788634}
-  to: {fileID: 114155652626333846}
---- !u!114 &114863356023788634
+  position: {x: 0, y: 0}
+  size: {x: 128, y: 64}
+  output: {fileID: 114061894219115324}
+--- !u!114 &114674833317790620
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -685,10 +608,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 896, y: -8}
   size: {x: 256, y: 272}
-  input: {fileID: 114359847456018976}
-  decisionA: {fileID: 114203894538293588}
-  decisionB: {fileID: 114859120406829386}
-  decisionC: {fileID: 114534978762337424}
+  input: {fileID: 114117271774600872}
+  decisionA: {fileID: 114110394430114986}
+  decisionB: {fileID: 114379691875111508}
+  decisionC: {fileID: 114326240952154212}
   decisionAText:
     langTexts:
       keys:
@@ -737,7 +660,99 @@ MonoBehaviour:
       values:
       - {fileID: 0}
       - {fileID: 0}
---- !u!114 &114876679290922924
+--- !u!114 &114683649682119156
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 1200, y: -592}
+  size: {x: 256, y: 160}
+  input: {fileID: 114467819950813376}
+  output: {fileID: 0}
+  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
+  text:
+    langTexts:
+      keys:
+      - DE
+      - EN
+      values:
+      - 
+      - Well that's good. See you!
+  audio:
+    langAudios:
+      keys:
+      - DE
+      - EN
+      values:
+      - {fileID: 0}
+      - {fileID: 0}
+--- !u!114 &114696461573366892
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fromAttributes:
+  - ID: 0
+    position: {x: 0, y: 64}
+  toAttribute:
+    ID: 0
+    position: {x: 0, y: 32}
+  froms:
+  - {fileID: 114792358247577492}
+  to: {fileID: 114256774933233748}
+--- !u!114 &114722659595005850
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fromAttributes:
+  - ID: 0
+    position: {x: 0, y: 32}
+  toAttribute:
+    ID: 0
+    position: {x: 0, y: 32}
+  froms:
+  - {fileID: 114535054315021652}
+  to: {fileID: 114358055496513426}
+--- !u!114 &114769105287645246
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fromAttributes:
+  - ID: 0
+    position: {x: 0, y: 32}
+  toAttribute:
+    ID: 0
+    position: {x: 0, y: 32}
+  froms:
+  - {fileID: 114256774933233748}
+  to: {fileID: 114615590929103384}
+--- !u!114 &114792358247577492
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -750,10 +765,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 240, y: 104}
   size: {x: 256, y: 272}
-  input: {fileID: 114481689306678724}
-  decisionA: {fileID: 114559099974179794}
-  decisionB: {fileID: 114611361249014066}
-  decisionC: {fileID: 114782598320963028}
+  input: {fileID: 114061894219115324}
+  decisionA: {fileID: 114696461573366892}
+  decisionB: {fileID: 114108327646303250}
+  decisionC: {fileID: 114933426825202506}
   decisionAText:
     langTexts:
       keys:
@@ -802,7 +817,7 @@ MonoBehaviour:
       values:
       - {fileID: 0}
       - {fileID: 0}
---- !u!114 &114876798311835154
+--- !u!114 &114871240772659982
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -813,41 +828,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: 560, y: -16}
+  position: {x: 1200, y: 368}
   size: {x: 256, y: 160}
-  input: {fileID: 114611361249014066}
-  output: {fileID: 114359847456018976}
-  speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
-  text:
-    langTexts:
-      keys:
-      - DE
-      - EN
-      values:
-      - 
-      - The cat does cat things. What else?
-  audio:
-    langAudios:
-      keys:
-      - DE
-      - EN
-      values:
-      - {fileID: 0}
-      - {fileID: 0}
---- !u!114 &114925537074350130
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 698426407d4b17a47b3cce5d4b375517, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position: {x: 1200, y: 208}
-  size: {x: 256, y: 160}
-  input: {fileID: 114534978762337424}
+  input: {fileID: 114304266211143924}
   output: {fileID: 0}
   speaker: {fileID: 11400000, guid: 1b75cab60974265428c1570a45ba60b8, type: 2}
   text:
@@ -857,7 +840,7 @@ MonoBehaviour:
       - EN
       values:
       - 
-      - That would be... <w:2>interesting!
+      - You're welcome!
   audio:
     langAudios:
       keys:
@@ -866,7 +849,7 @@ MonoBehaviour:
       values:
       - {fileID: 0}
       - {fileID: 0}
---- !u!114 &114992154598841466
+--- !u!114 &114878289014194866
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -878,11 +861,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fromAttributes:
-  - ID: 0
-    position: {x: 0, y: 32}
+  - ID: 1
+    position: {x: 0, y: 128}
   toAttribute:
     ID: 0
     position: {x: 0, y: 32}
   froms:
-  - {fileID: 114558373127702740}
-  to: {fileID: 114752550135627718}
+  - {fileID: 114615590929103384}
+  to: {fileID: 114202750502896590}
+--- !u!114 &114933426825202506
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5746923e1e1c91d40a26841cd02e1bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fromAttributes:
+  - ID: 2
+    position: {x: 0, y: 224}
+  toAttribute:
+    ID: 0
+    position: {x: 0, y: 32}
+  froms:
+  - {fileID: 114792358247577492}
+  to: {fileID: 114535054315021652}
