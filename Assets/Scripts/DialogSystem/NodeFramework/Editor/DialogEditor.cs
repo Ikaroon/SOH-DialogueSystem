@@ -1233,10 +1233,10 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             //Draw content of node
             GUILayout.BeginArea(new Rect(8f, 32f, node.size.x - 16f, node.size.y - 48f));
             Editor editor = Editor.CreateEditor(node);
-            INodeInspector nodeEditor = editor as INodeInspector;
+            NodeInspector nodeEditor = editor as NodeInspector;
             if (nodeEditor != null)
             {
-                nodeEditor.OnDrawNodeGUI(new Rect(0f, 0f, node.size.x - 16f, node.size.y - 48f));
+                nodeEditor.OnDrawNodeGUI(new Rect(0f, 0f, node.size.x - 16f, node.size.y - 48f), canvas);
             }
             else
             {
@@ -1321,6 +1321,7 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
 
                 //Remove Node
 
+                node.OnDelete(canvas);
                 int nodeID = canvas.nodes.IndexOf(node);
                 DestroyImmediate(node);
                 canvas.nodes.RemoveAt(nodeID);

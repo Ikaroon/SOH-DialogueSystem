@@ -220,6 +220,18 @@ namespace SpyOnHuman.DialogSystem.CharacterSystem
             sheet = AssetDatabase.LoadAssetAtPath(path, typeof(Character)) as Character;
         }
 
+        //Loads a specific Character sheet
+        public void Load(string path)
+        {
+            sheet = null;
+            lastSavedPath = path;
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+            sheet = AssetDatabase.LoadAssetAtPath(path, typeof(Character)) as Character;
+        }
+
         //Tries to Save the Character sheet at the last given path
         void Save()
         {

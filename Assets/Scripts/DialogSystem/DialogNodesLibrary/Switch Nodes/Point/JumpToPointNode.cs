@@ -14,6 +14,6 @@ namespace SpyOnHuman.DialogSystem
         [NodeHandle(0, ConnectionType.Output, 0f, true, "When the point ends with null then it will continue from here.")]
         public NodeConnection output;
 
-        public string pointKey;
+        public string pointKey = "";
     }
 }

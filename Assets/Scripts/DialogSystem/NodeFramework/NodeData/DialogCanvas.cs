@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Northwind.Essentials;
 
 namespace SpyOnHuman.DialogSystem.NodeFramework
 {
@@ -78,6 +79,9 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         //A list of all created Connections referenced in some Nodes of this Canvas
         public List<NodeConnection> connections = new List<NodeConnection>();
 
+        //A Reference to all defined Points
+        public DefinedPointDictionary definedPoints = new DefinedPointDictionary();
+
         #endregion
 
         #region Canvas Methods
@@ -87,5 +91,14 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         #region Canvas Static Methods
 
         #endregion
+    }
+
+    /// <summary>
+    /// A Dictionary which is sorted and serializable
+    /// </summary>
+    [System.Serializable]
+    public class DefinedPointDictionary : SerializableSortedDictionary<string, Node>
+    {
+        //A Node packing dictionary
     }
 }

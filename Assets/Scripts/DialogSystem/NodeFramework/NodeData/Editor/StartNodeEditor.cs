@@ -7,7 +7,7 @@ using SpyOnHuman.DialogSystem.NodeFramework;
 namespace SpyOnHuman.DialogSystem
 {
     [CustomEditor(typeof(StartNode))]
-    public class StartNodeEditor : Editor, INodeInspector
+    public class StartNodeEditor : NodeInspector
     {
         //StartNode node;
 
@@ -16,7 +16,7 @@ namespace SpyOnHuman.DialogSystem
           //node = (StartNode)target;
         }
 
-        public void OnDrawNodeGUI(Rect rect)
+        public override void OnDrawNodeGUI(Rect rect)
         {
             
         }

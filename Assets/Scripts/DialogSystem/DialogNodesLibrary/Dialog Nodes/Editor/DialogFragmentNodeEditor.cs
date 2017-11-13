@@ -8,7 +8,7 @@ using Northwind.Essentials;
 namespace SpyOnHuman.DialogSystem
 {
     [CustomEditor(typeof(DialogFragmentNode))]
-    public class DialogFragmentNodeEditor : Editor, INodeInspector
+    public class DialogFragmentNodeEditor : NodeInspector
     {
         DialogFragmentNode node;
 
@@ -17,7 +17,7 @@ namespace SpyOnHuman.DialogSystem
             node = (DialogFragmentNode)target;
         }
 
-        public void OnDrawNodeGUI(Rect rect)
+        public override void OnDrawNodeGUI(Rect rect)
         {
             node.speaker = DialogSystemDatabase.CharacterDropDown(new Rect(0f, 0f, rect.width, 16f), node.speaker);
 

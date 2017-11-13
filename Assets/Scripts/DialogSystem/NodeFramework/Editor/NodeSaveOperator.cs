@@ -119,6 +119,14 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                 }
             }
 
+            //Rebind Nodes to DefinedPoints
+            List<string> keys = new List<string>(canvas.definedPoints.Keys);
+            for (int k = 0; k < keys.Count; k++)
+            {
+                int nodeID = canvas.nodes.IndexOf(canvas.definedPoints[keys[k]]);
+                savedCanvas.definedPoints[keys[k]] = savedCanvas.nodes[nodeID];
+            }
+
             //Get Saving Path
             string newPath = path == "" ? EditorUtility.SaveFilePanelInProject("Save Node Canvas", "Node Canvas", "asset", "", "Assets/") : path;
 
@@ -293,6 +301,15 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
                     }
                 }
             }
+
+            //Rebind Nodes to DefinedPoints
+            List<string> keys = new List<string>(loadedCanvas.definedPoints.Keys);
+            for (int k = 0; k < keys.Count; k++)
+            {
+                int nodeID = loadedCanvas.nodes.IndexOf(loadedCanvas.definedPoints[keys[k]]);
+                canvas.definedPoints[keys[k]] = canvas.nodes[nodeID];
+            }
+
             return path;
         }
 

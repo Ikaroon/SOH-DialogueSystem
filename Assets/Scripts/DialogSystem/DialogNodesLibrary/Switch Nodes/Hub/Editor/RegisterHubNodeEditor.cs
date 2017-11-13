@@ -7,16 +7,16 @@ using SpyOnHuman.DialogSystem.NodeFramework;
 namespace SpyOnHuman.DialogSystem
 {
     [CustomEditor(typeof(RegisterHubNode))]
-    public class RegisterHubNodeEditor : Editor, INodeInspector
+    public class RegisterHubNodeEditor : NodeInspector
     {
-        RegisterHubNode node;
+        //RegisterHubNode node;
 
         private void OnEnable()
         {
-            node = (RegisterHubNode)target;
+            //node = (RegisterHubNode)target;
         }
 
-        public void OnDrawNodeGUI(Rect rect)
+        public override void OnDrawNodeGUI(Rect rect)
         {
         }
     }

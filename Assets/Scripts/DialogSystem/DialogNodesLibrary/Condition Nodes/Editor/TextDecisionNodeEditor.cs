@@ -7,7 +7,7 @@ using SpyOnHuman.DialogSystem.NodeFramework;
 namespace SpyOnHuman.DialogSystem
 {
     [CustomEditor(typeof(TextDecisionNode))]
-    public class TextDecisionNodeEditor : Editor, INodeInspector
+    public class TextDecisionNodeEditor : NodeInspector
     {
         TextDecisionNode node;
 
@@ -16,7 +16,7 @@ namespace SpyOnHuman.DialogSystem
             node = (TextDecisionNode)target;
         }
 
-        public void OnDrawNodeGUI(Rect rect)
+        public override void OnDrawNodeGUI(Rect rect)
         {
             InitStyles();
 

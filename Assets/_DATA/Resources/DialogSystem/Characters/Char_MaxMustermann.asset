@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad58ac1825ac5c46a09ac30d742bf2c, type: 3}
   m_Name: Char_MaxMustermann
   m_EditorClassIdentifier: 
-  timestamp: 2017/11/11 | 21:50
+  timestamp: 2017/11/13 | 11:48
   profile: {fileID: 2800000, guid: 2643145fd67473b4cafd942967b7c068, type: 3}
   forename: Max
   surname: Mustermann

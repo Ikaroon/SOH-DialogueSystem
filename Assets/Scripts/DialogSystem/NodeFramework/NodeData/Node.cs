@@ -44,6 +44,11 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
             size = nodeData.nodeSize;
         }
 
+        public virtual void OnDelete(DialogCanvas canvas)
+        {
+
+        }
+
         #endregion
 
         #region Node Editor Static Methods
@@ -87,6 +92,21 @@ namespace SpyOnHuman.DialogSystem.NodeFramework
         #endregion
 
         #region Node Methods
+
+        public virtual Node PrepareNode()
+        {
+            return null;
+        }
+
+        public virtual Node UpdateNode()
+        {
+            return null;
+        }
+
+        public virtual Node LateUpdateNode()
+        {
+            return null;
+        }
 
         #endregion
 
