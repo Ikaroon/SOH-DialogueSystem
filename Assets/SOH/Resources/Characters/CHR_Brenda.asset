@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad58ac1825ac5c46a09ac30d742bf2c, type: 3}
+  m_Name: CHR_Brenda
+  m_EditorClassIdentifier: 
+  timestamp: 2018/03/26 | 23:14
+  profile: {fileID: 2800000, guid: edf2632244f21394c9dc799546897e09, type: 3}
+  forename: Brenda
+  surname: 
+  age: 27
+  gender: 1
+  profession: Waitress
+  textColor: {r: 0.94016236, g: 0.5661765, b: 1, a: 1}
+  isPlayer: 0

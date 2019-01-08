@@ -1,0 +1,25 @@
+using UnityEngine;
+using SpyOnHuman.DialogSystem.NodeFramework;
+
+namespace SpyOnHuman.DialogSystem
+{
+    [NodeData("#NODE_NAME#", "#NODE_DESCRIPTION#", #NODE_WIDTH#, #NODE_HEIGHT#, #NODE_FIXED#, #NODE_COLOR#)]
+    public class #NODE_CLASSNAME#Node : Node
+    {
+	
+        #region Handles
+		
+		// Input Handles
+		#NODE_INPUT_HANDLES#
+		
+		// Output Handles
+		#NODE_OUTPUT_HANDLES#
+		
+        #endregion
+
+        #region Update Methods
+		
+        #endregion
+		
+	}
+}

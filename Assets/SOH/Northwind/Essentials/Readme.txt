@@ -1,0 +1,1 @@
+This is a lightweight collection of Northwind Essentials - by Marian Brinkmann

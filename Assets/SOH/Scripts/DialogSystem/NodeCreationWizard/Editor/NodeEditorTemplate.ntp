@@ -1,0 +1,25 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+using SpyOnHuman.DialogSystem.NodeFramework;
+using Northwind.Essentials;
+
+namespace SpyOnHuman.DialogSystem
+{
+    [CustomEditor(typeof(#NODE_CLASS#))]
+    public class #NODE_CLASS#Editor : NodeInspector
+    {
+        #NODE_CLASS# node;
+
+        void OnEnable()
+        {
+            node = (#NODE_CLASS#)target;
+        }
+
+        public override void OnDrawNodeGUI(Rect rect)
+        {
+            // Draw the Inspector
+        }
+    }
+}
